@@ -18,8 +18,8 @@ export const DEFAULT_PAGE_SIZE = 12;
 export const MAX_PAGE_SIZE = 50;
 
 // Poll configuration
-export const MAX_TITLE_LENGTH = 200;
-export const MAX_DESCRIPTION_LENGTH = 500;
+export const MAX_TITLE_LENGTH = 120;
+export const MAX_DESCRIPTION_LENGTH = 250;
 export const MAX_OPTION_TEXT_LENGTH = 100;
 
 // Image configuration

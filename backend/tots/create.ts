@@ -29,12 +29,12 @@ export const create = api<CreateTotParams, Tot>(
     }
 
     // Validate title and description length
-    if (req.title.length > 200) {
-      throw APIError.invalidArgument("Title must be 200 characters or less");
+    if (req.title.length > 120) {
+      throw APIError.invalidArgument("Title must be 120 characters or less");
     }
 
-    if (req.description && req.description.length > 500) {
-      throw APIError.invalidArgument("Description must be 500 characters or less");
+    if (req.description && req.description.length > 250) {
+      throw APIError.invalidArgument("Description must be 250 characters or less");
     }
 
     // Validate option text length

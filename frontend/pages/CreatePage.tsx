@@ -37,13 +37,13 @@ export default function CreatePage() {
       return;
     }
 
-    if (formData.title.length > 200) {
-      toast.error('Title must be 200 characters or less');
+    if (formData.title.length > 120) {
+      toast.error('Title must be 120 characters or less');
       return;
     }
 
-    if (formData.description && formData.description.length > 500) {
-      toast.error('Description must be 500 characters or less');
+    if (formData.description && formData.description.length > 250) {
+      toast.error('Description must be 250 characters or less');
       return;
     }
 
@@ -105,32 +105,32 @@ export default function CreatePage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-2">
-              <Label htmlFor="title">Title * (max 200 characters)</Label>
+              <Label htmlFor="title">Title * (max 120 characters)</Label>
               <Input
                 id="title"
                 placeholder="What's your tot about?"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
-                maxLength={200}
+                maxLength={120}
               />
               <div className="text-xs text-muted-foreground text-right">
-                {formData.title.length}/200
+                {formData.title.length}/120
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description (Optional, max 500 characters)</Label>
+              <Label htmlFor="description">Description (Optional, max 250 characters)</Label>
               <Textarea
                 id="description"
                 placeholder="Add more context to your tot..."
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
-                maxLength={500}
+                maxLength={250}
               />
               <div className="text-xs text-muted-foreground text-right">
-                {(formData.description || '').length}/500
+                {(formData.description || '').length}/250
               </div>
             </div>
 
