@@ -1,15 +1,24 @@
 import { api, APIError } from "encore.dev/api";
+import { Header } from "encore.dev/api";
 import { totsDB } from "./db";
 import { CreateTotRequest, Tot } from "./types";
 import { nanoid } from "nanoid";
 
+interface CreateTotParams extends CreateTotRequest {
+  xForwardedFor?: Header<"X-Forwarded-For">;
+  xRealIp?: Header<"X-Real-IP">;
+}
+
 // Creates a new This or That poll.
-export const create = api<CreateTotRequest, Tot>(
+export const create = api<CreateTotParams, Tot>(
   { expose: true, method: "POST", path: "/tots" },
   async (req) => {
     const id = nanoid(10);
     const now = new Date();
-    const expiresAt = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+    const expiresAt = req.expiresAt || new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+
+    // Extract IP address from headers
+    const creatorIp = req.xRealIp || req.xForwardedFor?.split(',')[0]?.trim() || 'unknown';
 
     if (!req.title.trim()) {
       throw APIError.invalidArgument("Title is required");
@@ -19,16 +28,34 @@ export const create = api<CreateTotRequest, Tot>(
       throw APIError.invalidArgument("Both options A and B are required");
     }
 
+    // Validate title and description length
+    if (req.title.length > 200) {
+      throw APIError.invalidArgument("Title must be 200 characters or less");
+    }
+
+    if (req.description && req.description.length > 500) {
+      throw APIError.invalidArgument("Description must be 500 characters or less");
+    }
+
+    // Validate option text length
+    if (req.optionAText.length > 100 || req.optionBText.length > 100) {
+      throw APIError.invalidArgument("Option text must be 100 characters or less");
+    }
+
+    if (req.optionCText && req.optionCText.length > 100) {
+      throw APIError.invalidArgument("Option text must be 100 characters or less");
+    }
+
     await totsDB.exec`
       INSERT INTO tots (
         id, title, description, option_a_text, option_a_image_url,
         option_b_text, option_b_image_url, option_c_text, option_c_image_url,
-        is_public, created_at, updated_at, expires_at
+        creator_ip, is_public, created_at, updated_at, expires_at
       ) VALUES (
         ${id}, ${req.title}, ${req.description || null}, ${req.optionAText},
         ${req.optionAImageUrl || null}, ${req.optionBText}, ${req.optionBImageUrl || null},
         ${req.optionCText || null}, ${req.optionCImageUrl || null},
-        ${req.isPublic ?? true}, ${now}, ${now}, ${expiresAt}
+        ${creatorIp}, ${req.isPublic ?? true}, ${now}, ${now}, ${expiresAt}
       )
     `;
 

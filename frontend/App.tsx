@@ -6,6 +6,7 @@ import CreatePage from './pages/CreatePage';
 import TotPage from './pages/TotPage';
 import ResultsPage from './pages/ResultsPage';
 import BrowsePage from './pages/BrowsePage';
+import SearchPage from './pages/SearchPage';
 import HistoryPage from './pages/HistoryPage';
 import Layout from './components/Layout';
 
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/create" element={<CreatePage />} />
             <Route path="/browse" element={<BrowsePage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/tot/:id" element={<TotPage />} />
             <Route path="/results/:id" element={<ResultsPage />} />

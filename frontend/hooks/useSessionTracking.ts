@@ -58,12 +58,30 @@ export function useSessionTracking() {
     return sessionData.votes.sort((a, b) => b.timestamp - a.timestamp);
   };
 
+  const getCreatedTots = (): string[] => {
+    return sessionData.createdTots;
+  };
+
   const clearSession = () => {
     setSessionData({
       sessionId: nanoid(16),
       votes: [],
       createdTots: []
     });
+  };
+
+  const clearVoteHistory = () => {
+    setSessionData(prev => ({
+      ...prev,
+      votes: []
+    }));
+  };
+
+  const clearCreatedTots = () => {
+    setSessionData(prev => ({
+      ...prev,
+      createdTots: []
+    }));
   };
 
   return {
@@ -74,6 +92,9 @@ export function useSessionTracking() {
     hasCreated,
     recordCreation,
     getVoteHistory,
-    clearSession
+    getCreatedTots,
+    clearSession,
+    clearVoteHistory,
+    clearCreatedTots
   };
 }

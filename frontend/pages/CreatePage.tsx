@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ImageUpload } from '@/components/ImageUpload';
 import { toast } from 'sonner';
 import backend from '~backend/client';
@@ -36,8 +37,28 @@ export default function CreatePage() {
       return;
     }
 
+    if (formData.title.length > 200) {
+      toast.error('Title must be 200 characters or less');
+      return;
+    }
+
+    if (formData.description && formData.description.length > 500) {
+      toast.error('Description must be 500 characters or less');
+      return;
+    }
+
     if (!formData.optionAText.trim() || !formData.optionBText.trim()) {
       toast.error('Please enter both options A and B');
+      return;
+    }
+
+    if (formData.optionAText.length > 100 || formData.optionBText.length > 100) {
+      toast.error('Option text must be 100 characters or less');
+      return;
+    }
+
+    if (formData.optionCText && formData.optionCText.length > 100) {
+      toast.error('Option text must be 100 characters or less');
       return;
     }
 
@@ -53,6 +74,15 @@ export default function CreatePage() {
       toast.error('Failed to create tot. Please try again.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const setExpiry = (hours: string) => {
+    if (hours === 'never') {
+      setFormData({ ...formData, expiresAt: undefined });
+    } else {
+      const expiryDate = new Date(Date.now() + parseInt(hours) * 60 * 60 * 1000);
+      setFormData({ ...formData, expiresAt: expiryDate });
     }
   };
 
@@ -75,25 +105,51 @@ export default function CreatePage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">Title * (max 200 characters)</Label>
               <Input
                 id="title"
                 placeholder="What's your tot about?"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
+                maxLength={200}
               />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.title.length}/200
+              </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description (Optional)</Label>
+              <Label htmlFor="description">Description (Optional, max 500 characters)</Label>
               <Textarea
                 id="description"
                 placeholder="Add more context to your tot..."
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
+                maxLength={500}
               />
+              <div className="text-xs text-muted-foreground text-right">
+                {(formData.description || '').length}/500
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="expiry">Expiry Time</Label>
+              <Select onValueChange={setExpiry} defaultValue="24">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select expiry time" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1 hour</SelectItem>
+                  <SelectItem value="6">6 hours</SelectItem>
+                  <SelectItem value="12">12 hours</SelectItem>
+                  <SelectItem value="24">24 hours (default)</SelectItem>
+                  <SelectItem value="48">48 hours</SelectItem>
+                  <SelectItem value="168">1 week</SelectItem>
+                  <SelectItem value="never">Never expires</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
@@ -101,14 +157,18 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option A *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionAText">Text *</Label>
+                  <Label htmlFor="optionAText">Text * (max 100 characters)</Label>
                   <Input
                     id="optionAText"
                     placeholder="First option"
                     value={formData.optionAText}
                     onChange={(e) => setFormData({ ...formData, optionAText: e.target.value })}
                     required
+                    maxLength={100}
                   />
+                  <div className="text-xs text-muted-foreground text-right">
+                    {formData.optionAText.length}/100
+                  </div>
                 </div>
                 <ImageUpload
                   label="Image (Optional)"
@@ -123,14 +183,18 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option B *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionBText">Text *</Label>
+                  <Label htmlFor="optionBText">Text * (max 100 characters)</Label>
                   <Input
                     id="optionBText"
                     placeholder="Second option"
                     value={formData.optionBText}
                     onChange={(e) => setFormData({ ...formData, optionBText: e.target.value })}
                     required
+                    maxLength={100}
                   />
+                  <div className="text-xs text-muted-foreground text-right">
+                    {formData.optionBText.length}/100
+                  </div>
                 </div>
                 <ImageUpload
                   label="Image (Optional)"
@@ -145,13 +209,17 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option C (Optional)</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionCText">Text</Label>
+                  <Label htmlFor="optionCText">Text (max 100 characters)</Label>
                   <Input
                     id="optionCText"
                     placeholder="Third option"
                     value={formData.optionCText}
                     onChange={(e) => setFormData({ ...formData, optionCText: e.target.value })}
+                    maxLength={100}
                   />
+                  <div className="text-xs text-muted-foreground text-right">
+                    {(formData.optionCText || '').length}/100
+                  </div>
                 </div>
                 <ImageUpload
                   label="Image (Optional)"
