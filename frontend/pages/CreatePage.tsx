@@ -10,10 +10,12 @@ import { ImageUpload } from '@/components/ImageUpload';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { CreateTotRequest } from '~backend/tots/types';
+import { useSessionTracking } from '../hooks/useSessionTracking';
 
 export default function CreatePage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { recordCreation } = useSessionTracking();
   const [formData, setFormData] = useState<CreateTotRequest>({
     title: '',
     description: '',
@@ -43,6 +45,7 @@ export default function CreatePage() {
 
     try {
       const tot = await backend.tots.create(formData);
+      recordCreation(tot.id);
       toast.success('Tot created successfully!');
       navigate(`/tot/${tot.id}`);
     } catch (error) {

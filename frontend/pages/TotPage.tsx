@@ -3,10 +3,12 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users, Clock, TrendingUp, BarChart3 } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Users, Clock, TrendingUp, BarChart3, CheckCircle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { Tot } from '~backend/tots/types';
+import { useSessionTracking } from '../hooks/useSessionTracking';
 
 export default function TotPage() {
   const { id } = useParams<{ id: string }>();
@@ -14,6 +16,11 @@ export default function TotPage() {
   const [tot, setTot] = useState<Tot | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVoting, setIsVoting] = useState(false);
+  const { hasVotedOn, getVoteFor, recordVote, hasCreated } = useSessionTracking();
+
+  const hasAlreadyVoted = id ? hasVotedOn(id) : false;
+  const previousVote = id ? getVoteFor(id) : null;
+  const isCreator = id ? hasCreated(id) : false;
 
   useEffect(() => {
     if (!id) return;
@@ -37,9 +44,15 @@ export default function TotPage() {
   const handleVote = async (option: 'A' | 'B' | 'C') => {
     if (!id || !tot) return;
 
+    if (hasAlreadyVoted) {
+      toast.error('You have already voted on this tot');
+      return;
+    }
+
     setIsVoting(true);
     try {
       await backend.tots.vote({ id, option });
+      recordVote(id, option);
       toast.success('Vote submitted successfully!');
       navigate(`/results/${id}`);
     } catch (error) {
@@ -74,6 +87,14 @@ export default function TotPage() {
       return `${hours}h ${minutes}m remaining`;
     }
     return `${minutes}m remaining`;
+  };
+
+  const getOptionLabel = (option: 'A' | 'B' | 'C') => {
+    switch (option) {
+      case 'A': return tot?.optionAText || 'Option A';
+      case 'B': return tot?.optionBText || 'Option B';
+      case 'C': return tot?.optionCText || 'Option C';
+    }
   };
 
   if (isLoading) {
@@ -117,6 +138,11 @@ export default function TotPage() {
               Trending
             </Badge>
           )}
+          {isCreator && (
+            <Badge variant="outline">
+              Your Tot
+            </Badge>
+          )}
         </div>
         
         {tot.description && (
@@ -137,11 +163,40 @@ export default function TotPage() {
         </div>
       </div>
 
+      {/* Vote Status Alert */}
+      {hasAlreadyVoted && (
+        <Alert>
+          <CheckCircle className="h-4 w-4" />
+          <AlertDescription>
+            You have already voted for <strong>{getOptionLabel(previousVote!)}</strong> on this tot.
+            <Link to={`/results/${tot.id}`} className="ml-2 underline">
+              View results
+            </Link>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {isCreator && (
+        <Alert>
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            This is your tot! You can view the results but cannot vote on your own creation.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Voting Options */}
       <div className={`grid ${gridCols} gap-6`}>
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+        <Card className={`hover:shadow-lg transition-shadow cursor-pointer group ${
+          previousVote === 'A' ? 'ring-2 ring-primary' : ''
+        }`}>
           <CardHeader>
-            <CardTitle className="text-center">Option A</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-center">Option A</CardTitle>
+              {previousVote === 'A' && (
+                <Badge variant="default">Your Vote</Badge>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {tot.optionAImageUrl && (
@@ -157,19 +212,30 @@ export default function TotPage() {
               <p className="text-lg font-medium mb-4">{tot.optionAText}</p>
               <Button
                 onClick={() => handleVote('A')}
-                disabled={isVoting}
+                disabled={isVoting || hasAlreadyVoted || isCreator}
                 className="w-full"
                 size="lg"
+                variant={previousVote === 'A' ? 'default' : 'outline'}
               >
-                {isVoting ? 'Voting...' : 'Vote for A'}
+                {isVoting ? 'Voting...' : 
+                 hasAlreadyVoted ? (previousVote === 'A' ? 'Your Vote' : 'Already Voted') :
+                 isCreator ? 'Cannot Vote (Your Tot)' :
+                 'Vote for A'}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+        <Card className={`hover:shadow-lg transition-shadow cursor-pointer group ${
+          previousVote === 'B' ? 'ring-2 ring-primary' : ''
+        }`}>
           <CardHeader>
-            <CardTitle className="text-center">Option B</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-center">Option B</CardTitle>
+              {previousVote === 'B' && (
+                <Badge variant="default">Your Vote</Badge>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {tot.optionBImageUrl && (
@@ -185,20 +251,31 @@ export default function TotPage() {
               <p className="text-lg font-medium mb-4">{tot.optionBText}</p>
               <Button
                 onClick={() => handleVote('B')}
-                disabled={isVoting}
+                disabled={isVoting || hasAlreadyVoted || isCreator}
                 className="w-full"
                 size="lg"
+                variant={previousVote === 'B' ? 'default' : 'outline'}
               >
-                {isVoting ? 'Voting...' : 'Vote for B'}
+                {isVoting ? 'Voting...' : 
+                 hasAlreadyVoted ? (previousVote === 'B' ? 'Your Vote' : 'Already Voted') :
+                 isCreator ? 'Cannot Vote (Your Tot)' :
+                 'Vote for B'}
               </Button>
             </div>
           </CardContent>
         </Card>
 
         {hasThreeOptions && (
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+          <Card className={`hover:shadow-lg transition-shadow cursor-pointer group ${
+            previousVote === 'C' ? 'ring-2 ring-primary' : ''
+          }`}>
             <CardHeader>
-              <CardTitle className="text-center">Option C</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-center">Option C</CardTitle>
+                {previousVote === 'C' && (
+                  <Badge variant="default">Your Vote</Badge>
+                )}
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               {tot.optionCImageUrl && (
@@ -214,11 +291,15 @@ export default function TotPage() {
                 <p className="text-lg font-medium mb-4">{tot.optionCText}</p>
                 <Button
                   onClick={() => handleVote('C')}
-                  disabled={isVoting}
+                  disabled={isVoting || hasAlreadyVoted || isCreator}
                   className="w-full"
                   size="lg"
+                  variant={previousVote === 'C' ? 'default' : 'outline'}
                 >
-                  {isVoting ? 'Voting...' : 'Vote for C'}
+                  {isVoting ? 'Voting...' : 
+                   hasAlreadyVoted ? (previousVote === 'C' ? 'Your Vote' : 'Already Voted') :
+                   isCreator ? 'Cannot Vote (Your Tot)' :
+                   'Vote for C'}
                 </Button>
               </div>
             </CardContent>

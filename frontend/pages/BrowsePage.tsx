@@ -5,10 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { TrendingUp, Users, Clock } from 'lucide-react';
+import { TrendingUp, Users, Clock, CheckCircle, User } from 'lucide-react';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { Tot } from '~backend/tots/types';
+import { useSessionTracking } from '../hooks/useSessionTracking';
 
 export default function BrowsePage() {
   const [tots, setTots] = useState<Tot[]>([]);
@@ -16,6 +17,7 @@ export default function BrowsePage() {
   const [showTrending, setShowTrending] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const { hasVotedOn, hasCreated } = useSessionTracking();
 
   const loadTots = async (pageNum: number = 1, trending: boolean = false) => {
     try {
@@ -130,53 +132,83 @@ export default function BrowsePage() {
       ) : (
         <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tots.map((tot) => (
-              <Card key={tot.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg line-clamp-2">{tot.title}</CardTitle>
-                    {tot.isTrending && (
-                      <Badge variant="secondary" className="ml-2">
-                        <TrendingUp className="h-3 w-3 mr-1" />
-                        Trending
-                      </Badge>
+            {tots.map((tot) => {
+              const hasVoted = hasVotedOn(tot.id);
+              const isCreator = hasCreated(tot.id);
+              
+              return (
+                <Card key={tot.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <CardTitle className="text-lg line-clamp-2">{tot.title}</CardTitle>
+                      <div className="flex flex-col space-y-1 ml-2">
+                        {tot.isTrending && (
+                          <Badge variant="secondary">
+                            <TrendingUp className="h-3 w-3 mr-1" />
+                            Trending
+                          </Badge>
+                        )}
+                        {hasVoted && (
+                          <Badge variant="outline">
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Voted
+                          </Badge>
+                        )}
+                        {isCreator && (
+                          <Badge variant="outline">
+                            <User className="h-3 w-3 mr-1" />
+                            Your Tot
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    {tot.description && (
+                      <CardDescription className="line-clamp-2">
+                        {tot.description}
+                      </CardDescription>
                     )}
-                  </div>
-                  {tot.description && (
-                    <CardDescription className="line-clamp-2">
-                      {tot.description}
-                    </CardDescription>
-                  )}
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
-                        <Users className="h-4 w-4" />
-                        <span>{tot.totalVotes} votes</span>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-4 w-4" />
+                          <span>{tot.totalVotes} votes</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{tot.expiresAt ? getTimeRemaining(tot.expiresAt) : formatDate(tot.createdAt)}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{tot.expiresAt ? getTimeRemaining(tot.expiresAt) : formatDate(tot.createdAt)}</span>
+                      
+                      <div className="space-y-2">
+                        <div className="text-sm font-medium">Options:</div>
+                        <div className="text-sm text-muted-foreground">
+                          <div>A: {tot.optionAText}</div>
+                          <div>B: {tot.optionBText}</div>
+                          {tot.optionCText && <div>C: {tot.optionCText}</div>}
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="text-sm font-medium">Options:</div>
-                      <div className="text-sm text-muted-foreground">
-                        <div>A: {tot.optionAText}</div>
-                        <div>B: {tot.optionBText}</div>
-                        {tot.optionCText && <div>C: {tot.optionCText}</div>}
-                      </div>
-                    </div>
 
-                    <Link to={`/tot/${tot.id}`} className="block">
-                      <Button className="w-full">Vote Now</Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      <div className="flex space-x-2">
+                        <Link to={`/tot/${tot.id}`} className="flex-1">
+                          <Button className="w-full" variant={hasVoted || isCreator ? "outline" : "default"}>
+                            {hasVoted ? 'View & Results' : isCreator ? 'View Your Tot' : 'Vote Now'}
+                          </Button>
+                        </Link>
+                        {(hasVoted || isCreator) && (
+                          <Link to={`/results/${tot.id}`}>
+                            <Button variant="outline" size="icon">
+                              <CheckCircle className="h-4 w-4" />
+                            </Button>
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {hasMore && (

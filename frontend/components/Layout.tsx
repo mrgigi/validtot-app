@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from './ThemeToggle';
-import { Vote, Plus, TrendingUp } from 'lucide-react';
+import { Vote, Plus, TrendingUp, History } from 'lucide-react';
+import { useSessionTracking } from '../hooks/useSessionTracking';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const { getVoteHistory } = useSessionTracking();
+  const voteCount = getVoteHistory().length;
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b">
@@ -20,6 +24,15 @@ export default function Layout({ children }: LayoutProps) {
           <nav className="hidden md:flex items-center space-x-6">
             <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
               Browse Tots
+            </Link>
+            <Link to="/history" className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1">
+              <History className="h-4 w-4" />
+              <span>History</span>
+              {voteCount > 0 && (
+                <span className="bg-primary text-primary-foreground text-xs rounded-full px-2 py-0.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+                  {voteCount}
+                </span>
+              )}
             </Link>
             <Link to="/create">
               <Button variant="outline" size="sm">
