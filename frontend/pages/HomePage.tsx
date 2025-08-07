@@ -10,7 +10,7 @@ const exampleTots = [
     id: 1,
     title: "Which outfit looks better?",
     description: "Help me choose for tonight's dinner!",
-    votes: 1247,
+    votes: 847523,
     timeRemaining: "23h remaining",
     options: [
       {
@@ -19,7 +19,7 @@ const exampleTots = [
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 523,
+        votes: 356000,
         percentage: 42
       },
       {
@@ -28,7 +28,7 @@ const exampleTots = [
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 724,
+        votes: 491523,
         percentage: 58
       }
     ]
@@ -51,7 +51,7 @@ const exampleTots = [
       },
       {
         title: "Without Glasses",
-        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Wedding%20Dress%202.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XZWRkaW5nIERyZXNzIDIucG5nIiwiaWF0IjoxNzU0NTgzMDQ2LCJleHAiOjE3ODYxMTkwNDZ9.yzmyojviCs07vwhEXOmwFx9GzLVBubevr6iC1SKcrSg",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Without%20glasses.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XaXRob3V0IGdsYXNzZXMucG5nIiwiaWF0IjoxNzU0NTg0Mzg3LCJleHAiOjE3ODYxMjAzODd9.cjC3gOK_jhWx1YHybJn1r0fiWousNvOdJAt0x4mXhNM",
         placeholder: null,
         color: null,
         textColor: null,
@@ -64,7 +64,7 @@ const exampleTots = [
     id: 3,
     title: "Which wedding dress should I choose for my big day?",
     description: "Help me pick the perfect dress for my dream wedding! 👰✨",
-    votes: 15642,
+    votes: 1256420,
     timeRemaining: "11h remaining",
     options: [
       {
@@ -73,7 +73,7 @@ const exampleTots = [
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 9385,
+        votes: 753852,
         percentage: 60
       },
       {
@@ -82,7 +82,7 @@ const exampleTots = [
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 6257,
+        votes: 502568,
         percentage: 40
       }
     ]
