@@ -35,7 +35,7 @@ const exampleTots = [
   },
   {
     id: 2,
-    title: "Hey Friends. I'm better with or without the glasses?",
+    title: "Hey Friends. With or without the glasses?",
     description: "Honest opinions please! 🤓",
     votes: 2909000,
     timeRemaining: "18h remaining",
