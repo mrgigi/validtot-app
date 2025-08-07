@@ -1,10 +1,125 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, TrendingUp, Users, Zap, Camera, Share2, BarChart3, Clock } from 'lucide-react';
+import { Plus, TrendingUp, Users, Zap, Camera, Share2, BarChart3, Clock, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
+
+const examplePolls = [
+  {
+    id: 1,
+    title: "Which outfit looks better?",
+    description: "Help me choose for tonight's dinner!",
+    votes: 1247,
+    timeRemaining: "23h remaining",
+    options: [
+      {
+        title: "Casual & Comfy",
+        image: null,
+        placeholder: "Casual Outfit Photo",
+        color: "from-blue-100 to-blue-200",
+        textColor: "text-blue-600",
+        votes: 523,
+        percentage: 42
+      },
+      {
+        title: "Dressed Up",
+        image: null,
+        placeholder: "Formal Outfit Photo",
+        color: "from-purple-100 to-purple-200",
+        textColor: "text-purple-600",
+        votes: 724,
+        percentage: 58
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Hey Friends. I'm better with or without the glasses?",
+    description: "Honest opinions please! 🤓",
+    votes: 2909000,
+    timeRemaining: "18h remaining",
+    options: [
+      {
+        title: "With Glasses",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Warm%20Smile%20in%20Soft%20Lighting.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XYXJtIFNtaWxlIGluIFNvZnQgTGlnaHRpbmcucG5nIiwiaWF0IjoxNzU0NTgyOTc5LCJleHAiOjE3ODYxMTg5Nzl9.Fepwgd8hLioHy7Avmyn-t_d8N16eITxhCDEga3vDfLY",
+        placeholder: null,
+        color: null,
+        textColor: null,
+        votes: 2100000,
+        percentage: 72
+      },
+      {
+        title: "Without Glasses",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Wedding%20Dress%202.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XZWRkaW5nIERyZXNzIDIucG5nIiwiaWF0IjoxNzU0NTgzMDQ2LCJleHAiOjE3ODYxMTkwNDZ9.yzmyojviCs07vwhEXOmwFx9GzLVBubevr6iC1SKcrSg",
+        placeholder: null,
+        color: null,
+        textColor: null,
+        votes: 809000,
+        percentage: 28
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Which coding setup is more productive?",
+    description: "Settling the eternal debate once and for all!",
+    votes: 5432,
+    timeRemaining: "12h remaining",
+    options: [
+      {
+        title: "Dark Mode",
+        image: null,
+        placeholder: "Dark Theme IDE",
+        color: "from-gray-800 to-gray-900",
+        textColor: "text-gray-100",
+        votes: 4210,
+        percentage: 77
+      },
+      {
+        title: "Light Mode",
+        image: null,
+        placeholder: "Light Theme IDE",
+        color: "from-gray-50 to-gray-100",
+        textColor: "text-gray-800",
+        votes: 1222,
+        percentage: 23
+      }
+    ]
+  }
+];
 
 export default function HomePage() {
+  const [currentPollIndex, setCurrentPollIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPollIndex((prev) => (prev + 1) % examplePolls.length);
+    }, 5000); // Auto-scroll every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const formatVotes = (votes: number) => {
+    if (votes >= 1000000) {
+      return `${(votes / 1000000).toFixed(1)}m`;
+    }
+    if (votes >= 1000) {
+      return `${(votes / 1000).toFixed(1)}k`;
+    }
+    return votes.toString();
+  };
+
+  const nextPoll = () => {
+    setCurrentPollIndex((prev) => (prev + 1) % examplePolls.length);
+  };
+
+  const prevPoll = () => {
+    setCurrentPollIndex((prev) => (prev - 1 + examplePolls.length) % examplePolls.length);
+  };
+
+  const currentPoll = examplePolls[currentPollIndex];
+
   return (
     <div className="space-y-16">
       {/* Hero Section */}
@@ -37,71 +152,103 @@ export default function HomePage() {
       <section className="bg-muted/50 rounded-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">See It In Action</h2>
-          <p className="text-muted-foreground">Here's how a typical poll looks</p>
+          <p className="text-muted-foreground">Here's how typical polls look</p>
         </div>
         
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto relative">
+          {/* Navigation Buttons */}
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
+            onClick={prevPoll}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="icon"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
+            onClick={nextPoll}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          {/* Poll Card */}
           <Card className="mb-6">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center space-x-2 mb-2">
-                <CardTitle className="text-2xl">Which outfit looks better?</CardTitle>
+                <CardTitle className="text-2xl">{currentPoll.title}</CardTitle>
                 <Badge variant="secondary">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   Trending
                 </Badge>
               </div>
-              <CardDescription>Help me choose for tonight's dinner!</CardDescription>
+              <CardDescription>{currentPoll.description}</CardDescription>
               <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground mt-4">
                 <div className="flex items-center space-x-1">
                   <Users className="h-4 w-4" />
-                  <span>1,247 votes</span>
+                  <span>{formatVotes(currentPoll.votes)} votes</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="h-4 w-4" />
-                  <span>23h remaining</span>
+                  <span>{currentPoll.timeRemaining}</span>
                 </div>
               </div>
             </CardHeader>
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-center">Casual & Comfy</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                  <div className="text-center text-blue-600">
-                    <Camera className="h-12 w-12 mx-auto mb-2" />
-                    <p className="text-sm">Casual Outfit Photo</p>
+            {currentPoll.options.map((option, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <CardTitle className="text-center">{option.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="aspect-video rounded-lg overflow-hidden">
+                    {option.image ? (
+                      <img
+                        src={option.image}
+                        alt={option.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className={`bg-gradient-to-br ${option.color} flex items-center justify-center`}>
+                        <div className={`text-center ${option.textColor}`}>
+                          <Camera className="h-12 w-12 mx-auto mb-2" />
+                          <p className="text-sm">{option.placeholder}</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div className="text-center">
-                  <Button className="w-full" size="lg">
-                    Vote for Casual
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="text-center space-y-2">
+                    <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+                      <Heart className="h-4 w-4 fill-red-500 text-red-500" />
+                      <span>{formatVotes(option.votes)} loves</span>
+                      <span>•</span>
+                      <span>{option.percentage}%</span>
+                    </div>
+                    <Button className="w-full" size="lg">
+                      Vote for {option.title}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-            <Card className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-center">Dressed Up</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
-                  <div className="text-center text-purple-600">
-                    <Camera className="h-12 w-12 mx-auto mb-2" />
-                    <p className="text-sm">Formal Outfit Photo</p>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <Button className="w-full" size="lg">
-                    Vote for Formal
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Pagination Dots */}
+          <div className="flex justify-center space-x-2 mb-6">
+            {examplePolls.map((_, index) => (
+              <button
+                key={index}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentPollIndex ? 'bg-primary' : 'bg-muted-foreground/30'
+                }`}
+                onClick={() => setCurrentPollIndex(index)}
+              />
+            ))}
           </div>
 
           <div className="text-center">
