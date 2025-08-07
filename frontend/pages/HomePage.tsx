@@ -62,7 +62,7 @@ const exampleTots = [
   },
   {
     id: 3,
-    title: "Which wedding dress should I choose for my big day?",
+    title: "Which should I choose for my big day?",
     description: "Help me pick the perfect dress for my dream wedding! 👰✨",
     votes: 1256420,
     timeRemaining: "11h remaining",
