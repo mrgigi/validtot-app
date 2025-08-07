@@ -43,11 +43,11 @@ export default function CreatePage() {
 
     try {
       const tot = await backend.tots.create(formData);
-      toast.success('Poll created successfully!');
+      toast.success('Tot created successfully!');
       navigate(`/tot/${tot.id}`);
     } catch (error) {
-      console.error('Failed to create poll:', error);
-      toast.error('Failed to create poll. Please try again.');
+      console.error('Failed to create tot:', error);
+      toast.error('Failed to create tot. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -56,17 +56,17 @@ export default function CreatePage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-2">Create a New Poll</h1>
+        <h1 className="text-3xl font-bold mb-2">Create a New Tot</h1>
         <p className="text-muted-foreground">
-          Create an engaging visual poll to get instant feedback from the crowd
+          Create an engaging visual tot to get instant feedback from the crowd
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Poll Details</CardTitle>
+          <CardTitle>Tot Details</CardTitle>
           <CardDescription>
-            Fill in the details for your new poll. Add up to 3 options with images.
+            Fill in the details for your new tot. Add up to 3 options with images.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -75,7 +75,7 @@ export default function CreatePage() {
               <Label htmlFor="title">Title *</Label>
               <Input
                 id="title"
-                placeholder="What's your poll about?"
+                placeholder="What's your tot about?"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
@@ -86,7 +86,7 @@ export default function CreatePage() {
               <Label htmlFor="description">Description (Optional)</Label>
               <Textarea
                 id="description"
-                placeholder="Add more context to your poll..."
+                placeholder="Add more context to your tot..."
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows={3}
@@ -166,11 +166,11 @@ export default function CreatePage() {
                 checked={formData.isPublic}
                 onCheckedChange={(checked) => setFormData({ ...formData, isPublic: checked })}
               />
-              <Label htmlFor="isPublic">Make this poll public</Label>
+              <Label htmlFor="isPublic">Make this tot public</Label>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading} size="lg">
-              {isLoading ? 'Creating...' : 'Create Poll'}
+              {isLoading ? 'Creating...' : 'Create Tot'}
             </Button>
           </form>
         </CardContent>

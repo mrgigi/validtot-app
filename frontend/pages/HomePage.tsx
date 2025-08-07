@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Plus, TrendingUp, Users, Zap, Camera, Share2, BarChart3, Clock, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
-const examplePolls = [
+const exampleTots = [
   {
     id: 1,
     title: "Which outfit looks better?",
@@ -15,19 +15,19 @@ const examplePolls = [
     options: [
       {
         title: "Casual & Comfy",
-        image: null,
-        placeholder: "Casual Outfit Photo",
-        color: "from-blue-100 to-blue-200",
-        textColor: "text-blue-600",
+        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&crop=center",
+        placeholder: null,
+        color: null,
+        textColor: null,
         votes: 523,
         percentage: 42
       },
       {
         title: "Dressed Up",
-        image: null,
-        placeholder: "Formal Outfit Photo",
-        color: "from-purple-100 to-purple-200",
-        textColor: "text-purple-600",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center",
+        placeholder: null,
+        color: null,
+        textColor: null,
         votes: 724,
         percentage: 58
       }
@@ -62,39 +62,39 @@ const examplePolls = [
   },
   {
     id: 3,
-    title: "Which coding setup is more productive?",
-    description: "Settling the eternal debate once and for all!",
-    votes: 5432,
-    timeRemaining: "12h remaining",
+    title: "Which vacation spot should I choose?",
+    description: "Help me decide where to spend my summer break!",
+    votes: 8234,
+    timeRemaining: "15h remaining",
     options: [
       {
-        title: "Dark Mode",
-        image: null,
-        placeholder: "Dark Theme IDE",
-        color: "from-gray-800 to-gray-900",
-        textColor: "text-gray-100",
-        votes: 4210,
-        percentage: 77
+        title: "Beach Paradise",
+        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop&crop=center",
+        placeholder: null,
+        color: null,
+        textColor: null,
+        votes: 5890,
+        percentage: 72
       },
       {
-        title: "Light Mode",
-        image: null,
-        placeholder: "Light Theme IDE",
-        color: "from-gray-50 to-gray-100",
-        textColor: "text-gray-800",
-        votes: 1222,
-        percentage: 23
+        title: "Mountain Adventure",
+        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
+        placeholder: null,
+        color: null,
+        textColor: null,
+        votes: 2344,
+        percentage: 28
       }
     ]
   }
 ];
 
 export default function HomePage() {
-  const [currentPollIndex, setCurrentPollIndex] = useState(0);
+  const [currentTotIndex, setCurrentTotIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPollIndex((prev) => (prev + 1) % examplePolls.length);
+      setCurrentTotIndex((prev) => (prev + 1) % exampleTots.length);
     }, 5000); // Auto-scroll every 5 seconds
 
     return () => clearInterval(interval);
@@ -110,15 +110,15 @@ export default function HomePage() {
     return votes.toString();
   };
 
-  const nextPoll = () => {
-    setCurrentPollIndex((prev) => (prev + 1) % examplePolls.length);
+  const nextTot = () => {
+    setCurrentTotIndex((prev) => (prev + 1) % exampleTots.length);
   };
 
-  const prevPoll = () => {
-    setCurrentPollIndex((prev) => (prev - 1 + examplePolls.length) % examplePolls.length);
+  const prevTot = () => {
+    setCurrentTotIndex((prev) => (prev - 1 + exampleTots.length) % exampleTots.length);
   };
 
-  const currentPoll = examplePolls[currentPollIndex];
+  const currentTot = exampleTots[currentTotIndex];
 
   return (
     <div className="space-y-16">
@@ -129,14 +129,14 @@ export default function HomePage() {
           <span className="text-primary block">No Follows. No Sign-Ups.</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Create visual polls in seconds. Get instant feedback from the crowd. 
+          Create visual tots in seconds. Get instant feedback from the crowd. 
           Perfect for choosing outfits, comparing options, or settling debates.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/create">
             <Button size="lg" className="w-full sm:w-auto">
               <Plus className="h-5 w-5 mr-2" />
-              Create Your First Poll
+              Create Your First Tot
             </Button>
           </Link>
           <Link to="/browse">
@@ -152,7 +152,7 @@ export default function HomePage() {
       <section className="bg-muted/50 rounded-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">See It In Action</h2>
-          <p className="text-muted-foreground">Here's how typical polls look</p>
+          <p className="text-muted-foreground">Here's how typical tots look</p>
         </div>
         
         <div className="max-w-4xl mx-auto relative">
@@ -161,7 +161,7 @@ export default function HomePage() {
             variant="outline"
             size="icon"
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-            onClick={prevPoll}
+            onClick={prevTot}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -170,37 +170,37 @@ export default function HomePage() {
             variant="outline"
             size="icon"
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
-            onClick={nextPoll}
+            onClick={nextTot}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
 
-          {/* Poll Card */}
+          {/* Tot Card */}
           <Card className="mb-6">
             <CardHeader className="text-center">
               <div className="flex items-center justify-center space-x-2 mb-2">
-                <CardTitle className="text-2xl">{currentPoll.title}</CardTitle>
+                <CardTitle className="text-2xl">{currentTot.title}</CardTitle>
                 <Badge variant="secondary">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   Trending
                 </Badge>
               </div>
-              <CardDescription>{currentPoll.description}</CardDescription>
+              <CardDescription>{currentTot.description}</CardDescription>
               <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground mt-4">
                 <div className="flex items-center space-x-1">
                   <Users className="h-4 w-4" />
-                  <span>{formatVotes(currentPoll.votes)} votes</span>
+                  <span>{formatVotes(currentTot.votes)} votes</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="h-4 w-4" />
-                  <span>{currentPoll.timeRemaining}</span>
+                  <span>{currentTot.timeRemaining}</span>
                 </div>
               </div>
             </CardHeader>
           </Card>
 
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {currentPoll.options.map((option, index) => (
+            {currentTot.options.map((option, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <CardTitle className="text-center">{option.title}</CardTitle>
@@ -240,13 +240,13 @@ export default function HomePage() {
 
           {/* Pagination Dots */}
           <div className="flex justify-center space-x-2 mb-6">
-            {examplePolls.map((_, index) => (
+            {exampleTots.map((_, index) => (
               <button
                 key={index}
                 className={`w-2 h-2 rounded-full transition-colors ${
-                  index === currentPollIndex ? 'bg-primary' : 'bg-muted-foreground/30'
+                  index === currentTotIndex ? 'bg-primary' : 'bg-muted-foreground/30'
                 }`}
-                onClick={() => setCurrentPollIndex(index)}
+                onClick={() => setCurrentTotIndex(index)}
               />
             ))}
           </div>
@@ -254,7 +254,7 @@ export default function HomePage() {
           <div className="text-center">
             <Link to="/create">
               <Button size="lg">
-                Create Your Own Poll Like This
+                Create Your Own Tot Like This
               </Button>
             </Link>
           </div>
@@ -319,7 +319,7 @@ export default function HomePage() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Polls last 24 hours. Stay anonymous or go viral — your choice. 
+                Tots last 24 hours. Stay anonymous or go viral — your choice. 
                 See instant percentages and vote counts.
               </p>
             </CardContent>
@@ -334,12 +334,12 @@ export default function HomePage() {
             <Zap className="h-10 w-10 text-primary mb-2" />
             <CardTitle>Quick & Easy</CardTitle>
             <CardDescription>
-              Create visual polls in seconds with our intuitive interface
+              Create visual tots in seconds with our intuitive interface
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Upload images, add descriptions, and share your poll instantly. 
+              Upload images, add descriptions, and share your tot instantly. 
               No registration required.
             </p>
           </CardContent>
@@ -371,7 +371,7 @@ export default function HomePage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Browse trending polls, discover new perspectives, and see 
+              Browse trending tots, discover new perspectives, and see 
               what the community is talking about.
             </p>
           </CardContent>
@@ -382,12 +382,12 @@ export default function HomePage() {
       <section className="text-center bg-muted rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-          Join thousands of users creating engaging visual polls. 
+          Join thousands of users creating engaging visual tots. 
           It's free, fast, and fun!
         </p>
         <Link to="/create">
           <Button size="lg">
-            Create Your Poll Now
+            Create Your Tot Now
           </Button>
         </Link>
       </section>

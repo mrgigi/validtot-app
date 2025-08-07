@@ -38,8 +38,8 @@ export default function ResultsPage() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: results?.tot.title || 'Check out this poll',
-          text: 'Vote on this interesting poll!',
+          title: results?.tot.title || 'Check out this tot',
+          text: 'Vote on this interesting tot!',
           url: url,
         });
       } catch (error) {
@@ -48,7 +48,7 @@ export default function ResultsPage() {
     } else {
       try {
         await navigator.clipboard.writeText(url);
-        toast.success('Poll link copied to clipboard!');
+        toast.success('Tot link copied to clipboard!');
       } catch (error) {
         toast.error('Failed to copy link');
       }
@@ -101,7 +101,7 @@ export default function ResultsPage() {
       <div className="text-center py-12">
         <p className="text-muted-foreground mb-4">Results not found</p>
         <Link to="/browse">
-          <Button>Browse Other Polls</Button>
+          <Button>Browse Other Tots</Button>
         </Link>
       </div>
     );
@@ -255,16 +255,16 @@ export default function ResultsPage() {
         <Link to={`/tot/${tot.id}`}>
           <Button size="lg" className="w-full sm:w-auto">
             <Vote className="h-5 w-5 mr-2" />
-            Vote on This Poll
+            Vote on This Tot
           </Button>
         </Link>
         <Button variant="outline" size="lg" onClick={handleShare} className="w-full sm:w-auto">
           <Share2 className="h-5 w-5 mr-2" />
-          Share Poll
+          Share Tot
         </Button>
         <Link to="/browse">
           <Button variant="outline" size="lg" className="w-full sm:w-auto">
-            Browse More Polls
+            Browse More Tots
           </Button>
         </Link>
       </div>

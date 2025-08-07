@@ -23,8 +23,8 @@ export default function TotPage() {
         const totData = await backend.tots.get({ id });
         setTot(totData);
       } catch (error) {
-        console.error('Failed to load poll:', error);
-        toast.error('Failed to load poll');
+        console.error('Failed to load tot:', error);
+        toast.error('Failed to load tot');
         navigate('/browse');
       } finally {
         setIsLoading(false);
@@ -94,9 +94,9 @@ export default function TotPage() {
   if (!tot) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground mb-4">Poll not found</p>
+        <p className="text-muted-foreground mb-4">Tot not found</p>
         <Link to="/browse">
-          <Button>Browse Other Polls</Button>
+          <Button>Browse Other Tots</Button>
         </Link>
       </div>
     );

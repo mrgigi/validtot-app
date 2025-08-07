@@ -33,8 +33,8 @@ export default function BrowsePage() {
       
       setHasMore(response.tots.length === 12);
     } catch (error) {
-      console.error('Failed to load polls:', error);
-      toast.error('Failed to load polls');
+      console.error('Failed to load tots:', error);
+      toast.error('Failed to load tots');
     } finally {
       setIsLoading(false);
     }
@@ -83,9 +83,9 @@ export default function BrowsePage() {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-2">Browse Polls</h1>
+        <h1 className="text-3xl font-bold mb-2">Browse Tots</h1>
         <p className="text-muted-foreground">
-          Discover and vote on interesting polls from the community
+          Discover and vote on interesting tots from the community
         </p>
       </div>
 
@@ -121,10 +121,10 @@ export default function BrowsePage() {
       ) : tots.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-muted-foreground mb-4">
-            {showTrending ? 'No trending polls found' : 'No polls found'}
+            {showTrending ? 'No trending tots found' : 'No tots found'}
           </p>
           <Link to="/create">
-            <Button>Create the first poll</Button>
+            <Button>Create the first tot</Button>
           </Link>
         </div>
       ) : (
