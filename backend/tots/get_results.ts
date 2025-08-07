@@ -19,6 +19,8 @@ export const getResults = api<GetResultsParams, TotResults>(
         option_a_image_url as "optionAImageUrl",
         option_b_text as "optionBText",
         option_b_image_url as "optionBImageUrl",
+        option_c_text as "optionCText",
+        option_c_image_url as "optionCImageUrl",
         creator_ip as "creatorIp",
         is_public as "isPublic",
         is_trending as "isTrending",
@@ -27,7 +29,8 @@ export const getResults = api<GetResultsParams, TotResults>(
         expires_at as "expiresAt",
         total_votes as "totalVotes",
         option_a_votes as "optionAVotes",
-        option_b_votes as "optionBVotes"
+        option_b_votes as "optionBVotes",
+        option_c_votes as "optionCVotes"
       FROM tots 
       WHERE id = ${id}
     `;
@@ -46,11 +49,15 @@ export const getResults = api<GetResultsParams, TotResults>(
     const percentageB = tot.totalVotes > 0 
       ? Math.round((tot.optionBVotes / tot.totalVotes) * 100)
       : 0;
+    const percentageC = tot.totalVotes > 0 
+      ? Math.round((tot.optionCVotes / tot.totalVotes) * 100)
+      : 0;
 
     return {
       tot,
       percentageA,
-      percentageB
+      percentageB,
+      percentageC
     };
   }
 );

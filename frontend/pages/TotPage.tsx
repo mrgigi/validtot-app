@@ -34,7 +34,7 @@ export default function TotPage() {
     loadTot();
   }, [id, navigate]);
 
-  const handleVote = async (option: 'A' | 'B') => {
+  const handleVote = async (option: 'A' | 'B' | 'C') => {
     if (!id || !tot) return;
 
     setIsVoting(true);
@@ -58,6 +58,22 @@ export default function TotPage() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const getTimeRemaining = (expiresAt: Date) => {
+    const now = new Date();
+    const expiry = new Date(expiresAt);
+    const diff = expiry.getTime() - now.getTime();
+    
+    if (diff <= 0) return 'Expired';
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours > 0) {
+      return `${hours}h ${minutes}m remaining`;
+    }
+    return `${minutes}m remaining`;
   };
 
   if (isLoading) {
@@ -86,8 +102,11 @@ export default function TotPage() {
     );
   }
 
+  const hasThreeOptions = tot.optionCText && tot.optionCText.trim();
+  const gridCols = hasThreeOptions ? 'md:grid-cols-3' : 'md:grid-cols-2';
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-2">
@@ -113,13 +132,13 @@ export default function TotPage() {
           </div>
           <div className="flex items-center space-x-1">
             <Clock className="h-4 w-4" />
-            <span>Created {formatDate(tot.createdAt)}</span>
+            <span>{tot.expiresAt ? getTimeRemaining(tot.expiresAt) : 'No expiry'}</span>
           </div>
         </div>
       </div>
 
       {/* Voting Options */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className={`grid ${gridCols} gap-6`}>
         <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
           <CardHeader>
             <CardTitle className="text-center">Option A</CardTitle>
@@ -175,6 +194,36 @@ export default function TotPage() {
             </div>
           </CardContent>
         </Card>
+
+        {hasThreeOptions && (
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
+            <CardHeader>
+              <CardTitle className="text-center">Option C</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {tot.optionCImageUrl && (
+                <div className="aspect-video rounded-lg overflow-hidden">
+                  <img
+                    src={tot.optionCImageUrl}
+                    alt={tot.optionCText}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
+                </div>
+              )}
+              <div className="text-center">
+                <p className="text-lg font-medium mb-4">{tot.optionCText}</p>
+                <Button
+                  onClick={() => handleVote('C')}
+                  disabled={isVoting}
+                  className="w-full"
+                  size="lg"
+                >
+                  {isVoting ? 'Voting...' : 'Vote for C'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* View Results Link */}

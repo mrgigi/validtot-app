@@ -10,8 +10,8 @@ interface VoteParams {
 export const vote = api<VoteParams & VoteRequest, TotResults>(
   { expose: true, method: "POST", path: "/tots/:id/vote" },
   async ({ id, option }) => {
-    if (option !== 'A' && option !== 'B') {
-      throw APIError.invalidArgument("Option must be 'A' or 'B'");
+    if (!['A', 'B', 'C'].includes(option)) {
+      throw APIError.invalidArgument("Option must be 'A', 'B', or 'C'");
     }
 
     // Check if tot exists and is public
@@ -48,10 +48,18 @@ export const vote = api<VoteParams & VoteRequest, TotResults>(
             updated_at = ${new Date()}
         WHERE id = ${id}
       `;
-    } else {
+    } else if (option === 'B') {
       await totsDB.exec`
         UPDATE tots 
         SET option_b_votes = option_b_votes + 1, 
+            total_votes = total_votes + 1,
+            updated_at = ${new Date()}
+        WHERE id = ${id}
+      `;
+    } else if (option === 'C') {
+      await totsDB.exec`
+        UPDATE tots 
+        SET option_c_votes = option_c_votes + 1, 
             total_votes = total_votes + 1,
             updated_at = ${new Date()}
         WHERE id = ${id}
@@ -68,6 +76,8 @@ export const vote = api<VoteParams & VoteRequest, TotResults>(
         option_a_image_url as "optionAImageUrl",
         option_b_text as "optionBText",
         option_b_image_url as "optionBImageUrl",
+        option_c_text as "optionCText",
+        option_c_image_url as "optionCImageUrl",
         creator_ip as "creatorIp",
         is_public as "isPublic",
         is_trending as "isTrending",
@@ -76,7 +86,8 @@ export const vote = api<VoteParams & VoteRequest, TotResults>(
         expires_at as "expiresAt",
         total_votes as "totalVotes",
         option_a_votes as "optionAVotes",
-        option_b_votes as "optionBVotes"
+        option_b_votes as "optionBVotes",
+        option_c_votes as "optionCVotes"
       FROM tots 
       WHERE id = ${id}
     `;
@@ -91,11 +102,15 @@ export const vote = api<VoteParams & VoteRequest, TotResults>(
     const percentageB = updatedTot.totalVotes > 0 
       ? Math.round((updatedTot.optionBVotes / updatedTot.totalVotes) * 100)
       : 0;
+    const percentageC = updatedTot.totalVotes > 0 
+      ? Math.round((updatedTot.optionCVotes / updatedTot.totalVotes) * 100)
+      : 0;
 
     return {
       tot: updatedTot,
       percentageA,
-      percentageB
+      percentageB,
+      percentageC
     };
   }
 );

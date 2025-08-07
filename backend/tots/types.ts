@@ -6,6 +6,8 @@ export interface Tot {
   optionAImageUrl?: string;
   optionBText: string;
   optionBImageUrl?: string;
+  optionCText?: string;
+  optionCImageUrl?: string;
   creatorIp?: string;
   isPublic: boolean;
   isTrending: boolean;
@@ -15,12 +17,13 @@ export interface Tot {
   totalVotes: number;
   optionAVotes: number;
   optionBVotes: number;
+  optionCVotes: number;
 }
 
 export interface Vote {
   id: number;
   totId: string;
-  optionSelected: 'A' | 'B';
+  optionSelected: 'A' | 'B' | 'C';
   voterIp?: string;
   userAgent?: string;
   createdAt: Date;
@@ -33,18 +36,21 @@ export interface CreateTotRequest {
   optionAImageUrl?: string;
   optionBText: string;
   optionBImageUrl?: string;
+  optionCText?: string;
+  optionCImageUrl?: string;
   isPublic?: boolean;
   expiresAt?: Date;
 }
 
 export interface VoteRequest {
-  option: 'A' | 'B';
+  option: 'A' | 'B' | 'C';
 }
 
 export interface TotResults {
   tot: Tot;
   percentageA: number;
   percentageB: number;
+  percentageC: number;
 }
 
 export interface ListTotsResponse {

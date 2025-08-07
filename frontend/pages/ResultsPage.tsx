@@ -39,7 +39,7 @@ export default function ResultsPage() {
       try {
         await navigator.share({
           title: results?.tot.title || 'Check out this poll',
-          text: 'Vote on this interesting "This or That" poll!',
+          text: 'Vote on this interesting poll!',
           url: url,
         });
       } catch (error) {
@@ -63,6 +63,22 @@ export default function ResultsPage() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const getTimeRemaining = (expiresAt: Date) => {
+    const now = new Date();
+    const expiry = new Date(expiresAt);
+    const diff = expiry.getTime() - now.getTime();
+    
+    if (diff <= 0) return 'Expired';
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours > 0) {
+      return `${hours}h ${minutes}m remaining`;
+    }
+    return `${minutes}m remaining`;
   };
 
   if (isLoading) {
@@ -91,10 +107,18 @@ export default function ResultsPage() {
     );
   }
 
-  const { tot, percentageA, percentageB } = results;
+  const { tot, percentageA, percentageB, percentageC } = results;
+  const hasThreeOptions = tot.optionCText && tot.optionCText.trim();
+  const gridCols = hasThreeOptions ? 'md:grid-cols-3' : 'md:grid-cols-2';
+
+  // Determine winner
+  const maxPercentage = Math.max(percentageA, percentageB, percentageC);
+  const isAWinner = percentageA === maxPercentage;
+  const isBWinner = percentageB === maxPercentage;
+  const isCWinner = percentageC === maxPercentage && hasThreeOptions;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center space-x-2">
@@ -120,18 +144,18 @@ export default function ResultsPage() {
           </div>
           <div className="flex items-center space-x-1">
             <Clock className="h-4 w-4" />
-            <span>Created {formatDate(tot.createdAt)}</span>
+            <span>{tot.expiresAt ? getTimeRemaining(tot.expiresAt) : 'No expiry'}</span>
           </div>
         </div>
       </div>
 
       {/* Results */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className={`${percentageA >= percentageB ? 'ring-2 ring-primary' : ''}`}>
+      <div className={`grid ${gridCols} gap-6`}>
+        <Card className={`${isAWinner ? 'ring-2 ring-primary' : ''}`}>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-center">Option A</CardTitle>
-              {percentageA >= percentageB && (
+              {isAWinner && (
                 <Badge variant="default">Winner</Badge>
               )}
             </div>
@@ -159,11 +183,11 @@ export default function ResultsPage() {
           </CardContent>
         </Card>
 
-        <Card className={`${percentageB > percentageA ? 'ring-2 ring-primary' : ''}`}>
+        <Card className={`${isBWinner ? 'ring-2 ring-primary' : ''}`}>
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-center">Option B</CardTitle>
-              {percentageB > percentageA && (
+              {isBWinner && (
                 <Badge variant="default">Winner</Badge>
               )}
             </div>
@@ -190,6 +214,40 @@ export default function ResultsPage() {
             </div>
           </CardContent>
         </Card>
+
+        {hasThreeOptions && (
+          <Card className={`${isCWinner ? 'ring-2 ring-primary' : ''}`}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-center">Option C</CardTitle>
+                {isCWinner && (
+                  <Badge variant="default">Winner</Badge>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {tot.optionCImageUrl && (
+                <div className="aspect-video rounded-lg overflow-hidden">
+                  <img
+                    src={tot.optionCImageUrl}
+                    alt={tot.optionCText}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="text-center space-y-4">
+                <p className="text-lg font-medium">{tot.optionCText}</p>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{percentageC}%</span>
+                    <span>{tot.optionCVotes} votes</span>
+                  </div>
+                  <Progress value={percentageC} className="h-3" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Actions */}

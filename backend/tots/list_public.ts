@@ -29,6 +29,8 @@ export const listPublic = api<ListPublicParams, ListTotsResponse>(
         option_a_image_url as "optionAImageUrl",
         option_b_text as "optionBText",
         option_b_image_url as "optionBImageUrl",
+        option_c_text as "optionCText",
+        option_c_image_url as "optionCImageUrl",
         creator_ip as "creatorIp",
         is_public as "isPublic",
         is_trending as "isTrending",
@@ -37,7 +39,8 @@ export const listPublic = api<ListPublicParams, ListTotsResponse>(
         expires_at as "expiresAt",
         total_votes as "totalVotes",
         option_a_votes as "optionAVotes",
-        option_b_votes as "optionBVotes"
+        option_b_votes as "optionBVotes",
+        option_c_votes as "optionCVotes"
       FROM tots 
       ${whereClause}
       ORDER BY created_at DESC

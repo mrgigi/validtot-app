@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { ImageUpload } from '@/components/ImageUpload';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { CreateTotRequest } from '~backend/tots/types';
@@ -20,6 +21,8 @@ export default function CreatePage() {
     optionAImageUrl: '',
     optionBText: '',
     optionBImageUrl: '',
+    optionCText: '',
+    optionCImageUrl: '',
     isPublic: true,
   });
 
@@ -32,7 +35,7 @@ export default function CreatePage() {
     }
 
     if (!formData.optionAText.trim() || !formData.optionBText.trim()) {
-      toast.error('Please enter both options');
+      toast.error('Please enter both options A and B');
       return;
     }
 
@@ -51,11 +54,11 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Create a New Poll</h1>
         <p className="text-muted-foreground">
-          Create an engaging visual "This or That" poll to share with others
+          Create an engaging visual poll to get instant feedback from the crowd
         </p>
       </div>
 
@@ -63,11 +66,11 @@ export default function CreatePage() {
         <CardHeader>
           <CardTitle>Poll Details</CardTitle>
           <CardDescription>
-            Fill in the details for your new poll
+            Fill in the details for your new poll. Add up to 3 options with images.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-2">
               <Label htmlFor="title">Title *</Label>
               <Input
@@ -90,9 +93,10 @@ export default function CreatePage() {
               />
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8">
+              {/* Option A */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Option A</h3>
+                <h3 className="font-semibold text-lg">Option A *</h3>
                 <div className="space-y-2">
                   <Label htmlFor="optionAText">Text *</Label>
                   <Input
@@ -103,20 +107,18 @@ export default function CreatePage() {
                     required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="optionAImage">Image URL (Optional)</Label>
-                  <Input
-                    id="optionAImage"
-                    type="url"
-                    placeholder="https://example.com/image.jpg"
-                    value={formData.optionAImageUrl}
-                    onChange={(e) => setFormData({ ...formData, optionAImageUrl: e.target.value })}
-                  />
-                </div>
+                <ImageUpload
+                  label="Image (Optional)"
+                  placeholder="https://example.com/image.jpg"
+                  value={formData.optionAImageUrl}
+                  onChange={(url) => setFormData({ ...formData, optionAImageUrl: url })}
+                  onRemove={() => setFormData({ ...formData, optionAImageUrl: '' })}
+                />
               </div>
 
+              {/* Option B */}
               <div className="space-y-4">
-                <h3 className="font-semibold">Option B</h3>
+                <h3 className="font-semibold text-lg">Option B *</h3>
                 <div className="space-y-2">
                   <Label htmlFor="optionBText">Text *</Label>
                   <Input
@@ -127,16 +129,34 @@ export default function CreatePage() {
                     required
                   />
                 </div>
+                <ImageUpload
+                  label="Image (Optional)"
+                  placeholder="https://example.com/image.jpg"
+                  value={formData.optionBImageUrl}
+                  onChange={(url) => setFormData({ ...formData, optionBImageUrl: url })}
+                  onRemove={() => setFormData({ ...formData, optionBImageUrl: '' })}
+                />
+              </div>
+
+              {/* Option C */}
+              <div className="space-y-4">
+                <h3 className="font-semibold text-lg">Option C (Optional)</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionBImage">Image URL (Optional)</Label>
+                  <Label htmlFor="optionCText">Text</Label>
                   <Input
-                    id="optionBImage"
-                    type="url"
-                    placeholder="https://example.com/image.jpg"
-                    value={formData.optionBImageUrl}
-                    onChange={(e) => setFormData({ ...formData, optionBImageUrl: e.target.value })}
+                    id="optionCText"
+                    placeholder="Third option"
+                    value={formData.optionCText}
+                    onChange={(e) => setFormData({ ...formData, optionCText: e.target.value })}
                   />
                 </div>
+                <ImageUpload
+                  label="Image (Optional)"
+                  placeholder="https://example.com/image.jpg"
+                  value={formData.optionCImageUrl}
+                  onChange={(url) => setFormData({ ...formData, optionCImageUrl: url })}
+                  onRemove={() => setFormData({ ...formData, optionCImageUrl: '' })}
+                />
               </div>
             </div>
 
@@ -149,7 +169,7 @@ export default function CreatePage() {
               <Label htmlFor="isPublic">Make this poll public</Label>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading} size="lg">
               {isLoading ? 'Creating...' : 'Create Poll'}
             </Button>
           </form>

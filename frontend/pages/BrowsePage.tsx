@@ -60,12 +60,32 @@ export default function BrowsePage() {
     });
   };
 
+  const getTimeRemaining = (expiresAt: Date) => {
+    const now = new Date();
+    const expiry = new Date(expiresAt);
+    const diff = expiry.getTime() - now.getTime();
+    
+    if (diff <= 0) return 'Expired';
+    
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    
+    if (hours > 24) {
+      const days = Math.floor(hours / 24);
+      return `${days}d remaining`;
+    }
+    if (hours > 0) {
+      return `${hours}h remaining`;
+    }
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${minutes}m remaining`;
+  };
+
   return (
     <div className="space-y-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold mb-2">Browse Polls</h1>
         <p className="text-muted-foreground">
-          Discover and vote on interesting "This or That" polls
+          Discover and vote on interesting polls from the community
         </p>
       </div>
 
@@ -137,7 +157,7 @@ export default function BrowsePage() {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
-                        <span>{formatDate(tot.createdAt)}</span>
+                        <span>{tot.expiresAt ? getTimeRemaining(tot.expiresAt) : formatDate(tot.createdAt)}</span>
                       </div>
                     </div>
                     
@@ -146,6 +166,7 @@ export default function BrowsePage() {
                       <div className="text-sm text-muted-foreground">
                         <div>A: {tot.optionAText}</div>
                         <div>B: {tot.optionBText}</div>
+                        {tot.optionCText && <div>C: {tot.optionCText}</div>}
                       </div>
                     </div>
 
