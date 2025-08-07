@@ -206,15 +206,15 @@ export default function HomePage() {
                   <CardTitle className="text-center">{option.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="aspect-video rounded-lg overflow-hidden">
+                  <div className="aspect-video rounded-lg overflow-hidden bg-muted">
                     {option.image ? (
                       <img
                         src={option.image}
                         alt={option.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     ) : (
-                      <div className={`bg-gradient-to-br ${option.color} flex items-center justify-center`}>
+                      <div className={`bg-gradient-to-br ${option.color} flex items-center justify-center h-full`}>
                         <div className={`text-center ${option.textColor}`}>
                           <Camera className="h-12 w-12 mx-auto mb-2" />
                           <p className="text-sm">{option.placeholder}</p>

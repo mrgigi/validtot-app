@@ -162,11 +162,11 @@ export default function ResultsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {tot.optionAImageUrl && (
-              <div className="aspect-video rounded-lg overflow-hidden">
+              <div className="aspect-video rounded-lg overflow-hidden bg-muted">
                 <img
                   src={tot.optionAImageUrl}
                   alt={tot.optionAText}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
             )}
@@ -194,11 +194,11 @@ export default function ResultsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {tot.optionBImageUrl && (
-              <div className="aspect-video rounded-lg overflow-hidden">
+              <div className="aspect-video rounded-lg overflow-hidden bg-muted">
                 <img
                   src={tot.optionBImageUrl}
                   alt={tot.optionBText}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
             )}
@@ -227,11 +227,11 @@ export default function ResultsPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               {tot.optionCImageUrl && (
-                <div className="aspect-video rounded-lg overflow-hidden">
+                <div className="aspect-video rounded-lg overflow-hidden bg-muted">
                   <img
                     src={tot.optionCImageUrl}
                     alt={tot.optionCText}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               )}

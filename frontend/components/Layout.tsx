@@ -19,7 +19,7 @@ export default function Layout({ children }: LayoutProps) {
           
           <nav className="hidden md:flex items-center space-x-6">
             <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
-              Browse
+              Browse Tots
             </Link>
             <Link to="/create">
               <Button variant="outline" size="sm">

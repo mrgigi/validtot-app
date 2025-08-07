@@ -82,11 +82,11 @@ export function ImageUpload({ value, onChange, onRemove, label, placeholder }: I
       
       {value ? (
         <div className="relative">
-          <div className="aspect-video rounded-lg overflow-hidden border">
+          <div className="aspect-video rounded-lg overflow-hidden border bg-muted">
             <img
               src={value}
               alt="Preview"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
           <Button
