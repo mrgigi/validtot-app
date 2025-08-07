@@ -42,7 +42,7 @@ const exampleTots = [
     options: [
       {
         title: "With Glasses",
-        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Warm%20Smile%20in%20Soft%20Lighting.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XYXJtIFNtaWxlIGluIFNvZnQgTGlnaHRpbmcucG5nIiwiaWF0IjoxNzU0NTgyOTc5LCJleHAiOjE3ODYxMTg5Nzl9.Fepwgd8hLioHy7Avmyn-t_d8N16eITxhCDEga3vDfLY",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/withglasses.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC93aXRoZ2xhc3Nlcy5wbmciLCJpYXQiOjE3NTQ1ODM5NDksImV4cCI6MTc4NjExOTk0OX0.8GwsZWHtlTLyJDBm7vJBiF-WyZVAHhIBYSMGUajWYc8",
         placeholder: null,
         color: null,
         textColor: null,
@@ -62,28 +62,28 @@ const exampleTots = [
   },
   {
     id: 3,
-    title: "Which vacation spot should I choose?",
-    description: "Help me decide where to spend my summer break!",
-    votes: 8234,
-    timeRemaining: "15h remaining",
+    title: "Which wedding dress should I choose for my big day?",
+    description: "Help me pick the perfect dress for my dream wedding! 👰✨",
+    votes: 15642,
+    timeRemaining: "11h remaining",
     options: [
       {
-        title: "Beach Paradise",
-        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop&crop=center",
+        title: "Classic Elegance",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Wedding%20Dress%202.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XZWRkaW5nIERyZXNzIDIucG5nIiwiaWF0IjoxNzU0NTgzODU0LCJleHAiOjE3ODYxMTk4NTR9.MCCWx6FSdDLbKyjr3Hc8CRY3AaedTMiGCAJDsc0j-Nc",
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 5890,
-        percentage: 72
+        votes: 9385,
+        percentage: 60
       },
       {
-        title: "Mountain Adventure",
-        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
+        title: "Modern Romance",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Wedding%20Dress%201.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9XZWRkaW5nIERyZXNzIDEucG5nIiwiaWF0IjoxNzU0NTgzODg4LCJleHAiOjE3ODYxMTk4ODh9.Pq7coAvwWxbkFhw3IafWhZJmtFN5Z5GJYvUsIRn-KN8",
         placeholder: null,
         color: null,
         textColor: null,
-        votes: 2344,
-        percentage: 28
+        votes: 6257,
+        percentage: 40
       }
     ]
   }
