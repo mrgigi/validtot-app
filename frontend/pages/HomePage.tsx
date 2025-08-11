@@ -15,7 +15,7 @@ const exampleTots = [
     options: [
       {
         title: "DP Option 1",
-        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&crop=center",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Profile%20Pic%201.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9Qcm9maWxlIFBpYyAxLnBuZyIsImlhdCI6MTc1NDkyMzI3OCwiZXhwIjoxNzg2NDU5Mjc4fQ.3iPzmTfYBYahuKRfBu2aFmffTKoizqgIRWJDgtfYg4M",
         placeholder: null,
         color: null,
         textColor: null,
@@ -24,7 +24,7 @@ const exampleTots = [
       },
       {
         title: "DP Option 2",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center",
+        image: "https://pmccieeeafumffeudusl.supabase.co/storage/v1/object/sign/validtot/Profile%20Pic%202.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV83Y2U3MTJlZS0wMzJiLTRkZTQtODI3MS1hOWIzODNiZTlkYzciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2YWxpZHRvdC9Qcm9maWxlIFBpYyAyLnBuZyIsImlhdCI6MTc1NDkyMzcwMiwiZXhwIjoxNzg2NDU5NzAyfQ.y8sylBYoTo8yDPwZBxMiAlAf4Q-2s0woE7lY4fH5uv4",
         placeholder: null,
         color: null,
         textColor: null,
