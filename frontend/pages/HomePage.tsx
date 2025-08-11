@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,13 +8,13 @@ import { Plus, TrendingUp, Users, Zap, Camera, Share2, BarChart3, Clock, Chevron
 const exampleTots = [
   {
     id: 1,
-    title: "Which outfit looks better?",
-    description: "Help me choose for tonight's dinner!",
+    title: "Need a new DP ASAP. Which?",
+    description: "Help me choose the best display picture!",
     votes: 847523,
     timeRemaining: "23h remaining",
     options: [
       {
-        title: "Casual & Comfy",
+        title: "DP Option 1",
         image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&crop=center",
         placeholder: null,
         color: null,
@@ -23,7 +23,7 @@ const exampleTots = [
         percentage: 42
       },
       {
-        title: "Dressed Up",
+        title: "DP Option 2",
         image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&crop=center",
         placeholder: null,
         color: null,
@@ -91,14 +91,7 @@ const exampleTots = [
 
 export default function HomePage() {
   const [currentTotIndex, setCurrentTotIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTotIndex((prev) => (prev + 1) % exampleTots.length);
-    }, 5000); // Auto-scroll every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  const touchStartX = useRef<number | null>(null);
 
   const formatVotes = (votes: number) => {
     if (votes >= 1000000) {
@@ -116,6 +109,22 @@ export default function HomePage() {
 
   const prevTot = () => {
     setCurrentTotIndex((prev) => (prev - 1 + exampleTots.length) % exampleTots.length);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const threshold = 40; // minimal swipe distance
+    if (deltaX > threshold) {
+      prevTot();
+    } else if (deltaX < -threshold) {
+      nextTot();
+    }
+    touchStartX.current = null;
   };
 
   const currentTot = exampleTots[currentTotIndex];
@@ -155,13 +164,18 @@ export default function HomePage() {
           <p className="text-muted-foreground">Here's how typical tots look</p>
         </div>
         
-        <div className="max-w-4xl mx-auto relative">
+        <div
+          className="max-w-4xl mx-auto relative"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
           {/* Navigation Buttons */}
           <Button
             variant="outline"
             size="icon"
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
             onClick={prevTot}
+            aria-label="Previous sample"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -171,6 +185,7 @@ export default function HomePage() {
             size="icon"
             className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 backdrop-blur-sm"
             onClick={nextTot}
+            aria-label="Next sample"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -247,6 +262,7 @@ export default function HomePage() {
                   index === currentTotIndex ? 'bg-primary' : 'bg-muted-foreground/30'
                 }`}
                 onClick={() => setCurrentTotIndex(index)}
+                aria-label={`Go to sample ${index + 1}`}
               />
             ))}
           </div>
