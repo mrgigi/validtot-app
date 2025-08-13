@@ -331,18 +331,18 @@ export default function TotPage() {
         )}
       </div>
 
-      {/* Action Buttons: View Results and Share */}
+      {/* Action Buttons: Share and View Results */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+        <Button variant="outline" size="lg" onClick={handleShare} className="w-full sm:w-auto">
+          <Share2 className="h-5 w-5 mr-2" />
+          Share Tot
+        </Button>
         <Link to={`/results/${tot.id}`}>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto"> {/* Added w-full and sm:w-auto for responsiveness */}
+          <Button variant="outline" size="lg" className="w-full sm:w-auto">
             <BarChart3 className="h-5 w-5 mr-2" />
             View Current Results
           </Button>
         </Link>
-        <Button variant="outline" size="lg" onClick={handleShare} className="w-full sm:w-auto"> {/* Added w-full and sm:w-auto for responsiveness */}
-          <Share2 className="h-5 w-5 mr-2" />
-          Share Tot
-        </Button>
       </div>
     </div>
   );
