@@ -157,7 +157,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <footer className="border-t mt-16">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>&copy; 2024 ValidToT. Visual This or That Voting Platform.</p>
+          <p>&copy;  2025 ValidToT. This or That - Compare for fun.</p>
         </div>
       </footer>
     </div>
