@@ -37,13 +37,14 @@ export default function ResultsPage() {
     
     if (navigator.share) {
       try {
+        const shareText = `No cap, your vote matters. "${results?.tot.title}" → ${url}`;
         await navigator.share({
           title: results?.tot.title || 'Check out this tot',
-          text: 'Vote on this interesting tot!',
+          text: shareText,
           url: url,
         });
       } catch (error) {
-        // User cancelled sharing
+        // Share failed or was cancelled
       }
     } else {
       try {
