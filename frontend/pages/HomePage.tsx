@@ -344,55 +344,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="grid md:grid-cols-3 gap-8">
-        <Card>
-          <CardHeader>
-            <Zap className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Quick & Easy</CardTitle>
-            <CardDescription>
-              Create visual tots in seconds with our intuitive interface
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Upload images, add descriptions, and share your tot instantly. 
-              No registration required.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <Users className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Real-time Results</CardTitle>
-            <CardDescription>
-              Watch votes come in live with beautiful visualizations
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              See percentage breakdowns, vote counts, and trending status 
-              updated in real-time.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <TrendingUp className="h-10 w-10 text-primary mb-2" />
-            <CardTitle>Discover Trends</CardTitle>
-            <CardDescription>
-              Explore what's popular and join the conversation
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Browse trending tots, discover new perspectives, and see 
-              what the community is talking about.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
+      <section className="grid md:grid-cols-3 gap-8"></section>
 
       {/* CTA Section */}
       <section className="text-center bg-muted rounded-lg p-8">
