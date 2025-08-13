@@ -157,17 +157,17 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option A *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionAText">Text * (max 100 characters)</Label>
+                  <Label htmlFor="optionAText">Text * (max 24 characters)</Label>
                   <Input
                     id="optionAText"
                     placeholder="First option"
                     value={formData.optionAText}
                     onChange={(e) => setFormData({ ...formData, optionAText: e.target.value })}
                     required
-                    maxLength={100}
+                    maxLength={24}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {formData.optionAText.length}/100
+                    {formData.optionAText.length}/24
                   </div>
                 </div>
                 <ImageUpload
@@ -183,17 +183,17 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option B *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionBText">Text * (max 100 characters)</Label>
+                  <Label htmlFor="optionBText">Text * (max 24 characters)</Label>
                   <Input
                     id="optionBText"
                     placeholder="Second option"
                     value={formData.optionBText}
                     onChange={(e) => setFormData({ ...formData, optionBText: e.target.value })}
                     required
-                    maxLength={100}
+                    maxLength={24}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {formData.optionBText.length}/100
+                    {formData.optionBText.length}/24
                   </div>
                 </div>
                 <ImageUpload
@@ -209,16 +209,16 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option C (Optional)</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionCText">Text (max 100 characters)</Label>
+                  <Label htmlFor="optionCText">Text (max 24 characters)</Label>
                   <Input
                     id="optionCText"
                     placeholder="Third option"
                     value={formData.optionCText}
                     onChange={(e) => setFormData({ ...formData, optionCText: e.target.value })}
-                    maxLength={100}
+                    maxLength={24}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {(formData.optionCText || '').length}/100
+                    {(formData.optionCText || '').length}/24
                   </div>
                 </div>
                 <ImageUpload
