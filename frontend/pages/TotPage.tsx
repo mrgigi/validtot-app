@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, Clock, TrendingUp, BarChart3, CheckCircle, Info, Share2 } from 'lucide-react'; // Added Share2 icon
+import { Users, Clock, TrendingUp, BarChart3, CheckCircle, Info, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { Tot } from '~backend/tots/types';
@@ -331,19 +331,15 @@ export default function TotPage() {
         )}
       </div>
 
-      {/* View Results Link */}
-      <div className="text-center mt-6"> {/* Added margin-top for spacing */}
+      {/* Action Buttons: View Results and Share */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
         <Link to={`/results/${tot.id}`}>
-          <Button variant="outline" size="lg">
+          <Button variant="outline" size="lg" className="w-full sm:w-auto"> {/* Added w-full and sm:w-auto for responsiveness */}
             <BarChart3 className="h-5 w-5 mr-2" />
             View Current Results
           </Button>
         </Link>
-      </div>
-
-      {/* Share Button */}
-      <div className="text-center mt-4"> {/* Added margin-top for spacing */}
-        <Button variant="outline" size="lg" onClick={handleShare}>
+        <Button variant="outline" size="lg" onClick={handleShare} className="w-full sm:w-auto"> {/* Added w-full and sm:w-auto for responsiveness */}
           <Share2 className="h-5 w-5 mr-2" />
           Share Tot
         </Button>
