@@ -63,30 +63,6 @@ export default function TotPage() {
     }
   };
 
-  const handleShare = async () => {
-    if (!tot) return;
-    const url = `${window.location.origin}/tot/${tot.id}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: tot.title || 'Check out this tot',
-          text: 'Vote on this interesting tot!',
-          url: url,
-        });
-      } catch (error) {
-        // User cancelled sharing
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(url);
-        toast.success('Tot link copied to clipboard!');
-      } catch (error) {
-        toast.error('Failed to copy link');
-      }
-    }
-  };
-
-
   const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString('en-US', {
       month: 'long',
@@ -101,16 +77,42 @@ export default function TotPage() {
     const now = new Date();
     const expiry = new Date(expiresAt);
     const diff = expiry.getTime() - now.getTime();
-
+    
     if (diff <= 0) return 'Expired';
-
+    
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
+    
     if (hours > 0) {
       return `${hours}h ${minutes}m remaining`;
     }
     return `${minutes}m remaining`;
+  };
+
+  const handleShare = async () => {
+    if (!tot) return;
+
+    const shareUrl = `${window.location.origin}/tot/${tot.id}`;
+    const shareText = `No cap, your vote matters. "${tot.title}" → `;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: shareText,
+          url: shareUrl,
+        });
+        console.log('Tot shared successfully');
+      } catch (error) {
+        console.error('Error sharing tot:', error);
+      }
+    } else {
+      navigator.clipboard.writeText(`${shareText}${shareUrl}`).then(() => {
+        toast.success('Tot link copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy tot link:', err);
+        toast.error('Failed to copy tot link.');
+      });
+    }
   };
 
   const getOptionLabel = (option: 'A' | 'B' | 'C') => {
@@ -168,11 +170,17 @@ export default function TotPage() {
             </Badge>
           )}
         </div>
-
+        
         {tot.description && (
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {tot.description}
+
           </p>
+        )}
+
+        {/* Share Button */}
+        {tot.id && (
+          <Button variant="outline" size="sm" onClick={handleShare}><Share2 className="h-4 w-4 mr-1" /> Share Tot</Button>
         )}
 
         <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
@@ -241,7 +249,7 @@ export default function TotPage() {
                 size="lg"
                 variant={previousVote === 'A' ? 'default' : 'outline'}
               >
-                {isVoting ? 'Voting...' :
+                {isVoting ? 'Voting...' : 
                  hasAlreadyVoted ? (previousVote === 'A' ? 'Your Vote' : 'Already Voted') :
                  isCreator ? 'Cannot Vote (Your Tot)' :
                  'Vote for A'}
@@ -280,7 +288,7 @@ export default function TotPage() {
                 size="lg"
                 variant={previousVote === 'B' ? 'default' : 'outline'}
               >
-                {isVoting ? 'Voting...' :
+                {isVoting ? 'Voting...' : 
                  hasAlreadyVoted ? (previousVote === 'B' ? 'Your Vote' : 'Already Voted') :
                  isCreator ? 'Cannot Vote (Your Tot)' :
                  'Vote for B'}
@@ -320,7 +328,7 @@ export default function TotPage() {
                   size="lg"
                   variant={previousVote === 'C' ? 'default' : 'outline'}
                 >
-                  {isVoting ? 'Voting...' :
+                  {isVoting ? 'Voting...' : 
                    hasAlreadyVoted ? (previousVote === 'C' ? 'Your Vote' : 'Already Voted') :
                    isCreator ? 'Cannot Vote (Your Tot)' :
                    'Vote for C'}
@@ -331,14 +339,10 @@ export default function TotPage() {
         )}
       </div>
 
-      {/* Action Buttons: Share and View Results */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-        <Button variant="outline" size="lg" onClick={handleShare} className="w-full sm:w-auto">
-          <Share2 className="h-5 w-5 mr-2" />
-          Share Tot
-        </Button>
+      {/* View Results Link */}
+      <div className="text-center">
         <Link to={`/results/${tot.id}`}>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto">
+          <Button variant="outline" size="lg">
             <BarChart3 className="h-5 w-5 mr-2" />
             View Current Results
           </Button>
