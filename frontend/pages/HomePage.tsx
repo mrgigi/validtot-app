@@ -420,7 +420,7 @@ export default function HomePage() {
       <section className="text-center bg-muted rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-          Join thousands of users creating engaging visual tots. 
+          Drop your pictures, get instant vibes from the people. 
           It's free, fast, and fun!
         </p>
         <Link to="/create">

@@ -91,7 +91,7 @@ export default function CreatePage() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Create a New Tot</h1>
         <p className="text-muted-foreground">
-          Create an engaging visual tot to get instant feedback from the crowd
+          Got Pictures? Let the crowd decide in minutes.
         </p>
       </div>
 
