@@ -55,9 +55,6 @@ export default function Layout({ children }: LayoutProps) {
               <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
                 Browse Tots
               </Link>
-              <Link to="/search" className="text-muted-foreground hover:text-foreground transition-colors">
-                <Search className="h-4 w-4" />
-              </Link>
               <Link to="/history" className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1">
                 <History className="h-4 w-4" />
                 <span>History</span>
@@ -118,14 +115,6 @@ export default function Layout({ children }: LayoutProps) {
                     Browse Tots
                   </Link>
                   <Link 
-                    to="/search" 
-                    className="text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center space-x-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Search className="h-4 w-4" />
-                    <span>Search</span>
-                  </Link>
-                  <Link 
                     to="/history" 
                     className="text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center space-x-2"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -157,7 +146,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <footer className="border-t mt-16">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>&copy; 2025 ValidToT. Pick a side. Shape the trend.</p>
+          <p>&copy; 2025 ValidToT. This or That - Compare for fun.</p>
         </div>
       </footer>
     </div>
