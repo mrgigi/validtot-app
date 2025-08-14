@@ -37,7 +37,7 @@ export default function ResultsPage() {
     
     if (navigator.share) {
       try {
-        const shareText = `No cap, your vote matters. "${results?.tot.title}" → ${url}`;
+        const shareText = `Join the fun – pick a side! "${results?.tot.title}" – ${url}`;
         await navigator.share({
           title: results?.tot.title || 'Check out this tot',
           text: shareText,
@@ -48,7 +48,8 @@ export default function ResultsPage() {
       }
     } else {
       try {
-        await navigator.clipboard.writeText(url);
+        const shareText = `Join the fun – pick a side! "${results?.tot.title}" – ${url}`;
+        await navigator.clipboard.writeText(shareText);
         toast.success('Tot link copied to clipboard!');
       } catch (error) {
         toast.error('Failed to copy link');
