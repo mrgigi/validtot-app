@@ -146,7 +146,14 @@ export default function Layout({ children }: LayoutProps) {
 
       <footer className="border-t mt-16">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>&copy; 2025 ValidToT. This or That - Compare for fun.</p>
+          <p className="text-sm">
+            <a
+              href="https://forms.gle/VDfGJE559gofZ3Zk9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground transition-colors mr-4"
+            >Contact or Suggest Features</a>
+            &copy; 2025 ValidToT. This or That - Compare for fun.</p>
         </div>
       </footer>
     </div>
