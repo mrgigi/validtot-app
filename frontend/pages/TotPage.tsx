@@ -94,6 +94,7 @@ export default function TotPage() {
 
     const shareUrl = `${window.location.origin}/tot/${tot.id}`;
     const shareText = `No cap, your vote matters. "${tot.title}" → `;
+    const shareMessage = `Join the fun – pick a side! "${tot.title}" – `;
 
     if (navigator.share) {
       try {
@@ -106,7 +107,7 @@ export default function TotPage() {
         console.error('Error sharing tot:', error);
       }
     } else {
-      navigator.clipboard.writeText(`${shareText}${shareUrl}`).then(() => {
+      navigator.clipboard.writeText(`${shareMessage}${shareUrl}`).then(() => {
         toast.success('Tot link copied to clipboard!');
       }).catch(err => {
         console.error('Failed to copy tot link:', err);
