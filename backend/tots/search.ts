@@ -17,7 +17,7 @@ export const search = api<SearchParams, ListTotsResponse>(
     const searchTerm = `%${q.toLowerCase()}%`;
     
     const tots = await totsDB.queryAll<Tot>`
-      SELECT 
+      SELECT
         id,
         title,
         description,
@@ -28,6 +28,8 @@ export const search = api<SearchParams, ListTotsResponse>(
         option_c_text as "optionCText",
         option_c_image_url as "optionCImageUrl",
         creator_ip as "creatorIp",
+        creator_user_id as "creatorUserId",
+        is_anonymous as "isAnonymous",
         is_public as "isPublic",
         is_trending as "isTrending",
         created_at as "createdAt",
@@ -37,8 +39,8 @@ export const search = api<SearchParams, ListTotsResponse>(
         option_a_votes as "optionAVotes",
         option_b_votes as "optionBVotes",
         option_c_votes as "optionCVotes"
-      FROM tots 
-      WHERE is_public = true 
+      FROM tots
+      WHERE is_public = true
         AND (LOWER(title) LIKE ${searchTerm} OR LOWER(description) LIKE ${searchTerm})
       ORDER BY total_votes DESC, created_at DESC
       LIMIT ${limit} OFFSET ${offset}

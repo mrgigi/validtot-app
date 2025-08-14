@@ -3,19 +3,21 @@ import { Header } from "encore.dev/api";
 import { totsDB } from "./db";
 import { CreateTotRequest, Tot } from "./types";
 import { nanoid } from "nanoid";
+import { authHandler } from "~backend/users/encore.service";
 
 interface CreateTotParams extends CreateTotRequest {
   xForwardedFor?: Header<"X-Forwarded-For">;
   xRealIp?: Header<"X-Real-IP">;
+  isAnonymous?: boolean;
 }
 
 // Creates a new This or That poll.
 export const create = api<CreateTotParams, Tot>(
-  { expose: true, method: "POST", path: "/tots" },
+  { expose: true, method: "POST", path: "/tots", auth: true },
   async (req) => {
     const id = nanoid(10);
     const now = new Date();
-    const expiresAt = req.expiresAt || new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+    const expiresAt = req.expiresAt || new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week from now
 
     // Extract IP address from headers
     const creatorIp = req.xRealIp || req.xForwardedFor?.split(',')[0]?.trim() || 'unknown';
@@ -46,16 +48,26 @@ export const create = api<CreateTotParams, Tot>(
       throw APIError.invalidArgument("Option text must be 100 characters or less");
     }
 
+    // Check if user is authenticated
+    let creatorUserId: string | null = null;
+    let isAnonymous = req.isAnonymous ?? true; // Default to anonymous for backward compatibility
+
+    // If user is authenticated, use their ID
+    if (req.auth?.uid) {
+      creatorUserId = req.auth.uid;
+      isAnonymous = req.isAnonymous ?? false; // Default to not anonymous for authenticated users
+    }
+
     await totsDB.exec`
       INSERT INTO tots (
         id, title, description, option_a_text, option_a_image_url,
         option_b_text, option_b_image_url, option_c_text, option_c_image_url,
-        creator_ip, is_public, created_at, updated_at, expires_at
+        creator_ip, creator_user_id, is_anonymous, is_public, created_at, updated_at, expires_at
       ) VALUES (
         ${id}, ${req.title}, ${req.description || null}, ${req.optionAText},
         ${req.optionAImageUrl || null}, ${req.optionBText}, ${req.optionBImageUrl || null},
         ${req.optionCText || null}, ${req.optionCImageUrl || null},
-        ${creatorIp}, ${req.isPublic ?? true}, ${now}, ${now}, ${expiresAt}
+        ${creatorIp}, ${creatorUserId}, ${isAnonymous}, ${req.isPublic ?? true}, ${now}, ${now}, ${expiresAt}
       )
     `;
 

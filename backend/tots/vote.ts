@@ -12,8 +12,8 @@ interface VoteParams {
 
 // Submits a vote for a This or That poll.
 export const vote = api<VoteParams & VoteRequest, TotResults>(
-  { expose: true, method: "POST", path: "/tots/:id/vote" },
-  async ({ id, option, userAgent, xForwardedFor, xRealIp }) => {
+  { expose: true, method: "POST", path: "/tots/:id/vote", auth: true },
+  async ({ id, option, userAgent, xForwardedFor, xRealIp, auth }) => {
     if (!['A', 'B', 'C'].includes(option)) {
       throw APIError.invalidArgument("Option must be 'A', 'B', or 'C'");
     }
@@ -40,21 +40,40 @@ export const vote = api<VoteParams & VoteRequest, TotResults>(
       throw APIError.failedPrecondition("This tot has expired");
     }
 
-    // Check if this IP has already voted on this tot
-    const existingVote = await totsDB.queryRow`
-      SELECT id FROM votes 
-      WHERE tot_id = ${id} AND voter_ip = ${voterIp}
-    `;
+    // Check if this user has already voted on this tot
+    let existingVote;
+    if (auth?.uid) {
+      // If user is authenticated, check by user ID
+      existingVote = await totsDB.queryRow`
+        SELECT id FROM votes 
+        WHERE tot_id = ${id} AND user_id = ${auth.uid}
+      `;
+    } else {
+      // If user is not authenticated, check by IP (backward compatibility)
+      existingVote = await totsDB.queryRow`
+        SELECT id FROM votes 
+        WHERE tot_id = ${id} AND voter_ip = ${voterIp}
+      `;
+    }
 
     if (existingVote) {
       throw APIError.alreadyExists("You have already voted on this tot");
     }
 
     // Record the vote
-    await totsDB.exec`
-      INSERT INTO votes (tot_id, option_selected, voter_ip, user_agent, created_at)
-      VALUES (${id}, ${option}, ${voterIp}, ${userAgent || null}, ${new Date()})
-    `;
+    if (auth?.uid) {
+      // If user is authenticated, record with user ID
+      await totsDB.exec`
+        INSERT INTO votes (tot_id, option_selected, user_id, voter_ip, user_agent, created_at)
+        VALUES (${id}, ${option}, ${auth.uid}, ${voterIp}, ${userAgent || null}, ${new Date()})
+      `;
+    } else {
+      // If user is not authenticated, record with IP only (backward compatibility)
+      await totsDB.exec`
+        INSERT INTO votes (tot_id, option_selected, voter_ip, user_agent, created_at)
+        VALUES (${id}, ${option}, ${voterIp}, ${userAgent || null}, ${new Date()})
+      `;
+    }
 
     // Update vote counts
     if (option === 'A') {

@@ -139,6 +139,13 @@ export default function ResultsPage() {
           </p>
         )}
 
+        {/* Creator Information */}
+        {tot.creatorUserId && (
+          <p className="text-sm text-muted-foreground">
+            {tot.isAnonymous ? 'Created by Anonymous User' : `Created by User ${tot.creatorUserId}`}
+          </p>
+        )}
+
         <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
           <div className="flex items-center space-x-1">
             <Users className="h-4 w-4" />

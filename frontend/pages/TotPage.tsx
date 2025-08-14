@@ -179,6 +179,13 @@ export default function TotPage() {
           </p>
         )}
 
+        {/* Creator Information */}
+        {tot.creatorUserId && (
+          <p className="text-sm text-muted-foreground">
+            {tot.isAnonymous ? 'Created by Anonymous User' : `Created by User ${tot.creatorUserId}`}
+          </p>
+        )}
+
         {/* Share Button */}
         {tot.id && (
           <Button variant="outline" size="sm" onClick={handleShare}><Share2 className="h-4 w-4 mr-1" /> Share Tot</Button>

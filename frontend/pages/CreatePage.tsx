@@ -16,6 +16,7 @@ import { useSessionTracking } from '../hooks/useSessionTracking';
 export default function CreatePage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(true);
   const { recordCreation } = useSessionTracking();
   const [formData, setFormData] = useState<CreateTotRequest>({
     title: '',
@@ -65,7 +66,10 @@ export default function CreatePage() {
     setIsLoading(true);
 
     try {
-      const tot = await backend.tots.create(formData);
+      const tot = await backend.tots.create({
+        ...formData,
+        isAnonymous: isAnonymous
+      });
       recordCreation(tot.id);
       toast.success('Tot created successfully!');
       navigate(`/tot/${tot.id}`);
@@ -238,6 +242,15 @@ export default function CreatePage() {
                 onCheckedChange={(checked) => setFormData({ ...formData, isPublic: checked })}
               />
               <Label htmlFor="isPublic">Make this tot public</Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="isAnonymous"
+                checked={isAnonymous}
+                onCheckedChange={setIsAnonymous}
+              />
+              <Label htmlFor="isAnonymous">Post anonymously</Label>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading} size="lg">
