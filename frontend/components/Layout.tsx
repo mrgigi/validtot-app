@@ -53,7 +53,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6">
               <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
-                Browse Tots
+                Browse ToTs
               </Link>
               <Link to="/history" className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1">
                 <History className="h-4 w-4" />
