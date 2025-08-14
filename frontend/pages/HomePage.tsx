@@ -144,8 +144,8 @@ export default function HomePage() {
           <span className="text-primary block">No Follows. No Sign-Ups.</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Create visual tots in seconds. Get instant feedback from the crowd. 
-          Perfect for choosing outfits, comparing options, or settling debates.
+          Want instant feedback on your pics? You’re in the right place — 
+					perfect for outfit choices, side-by-side comparisons, and quick decisions.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/create">
