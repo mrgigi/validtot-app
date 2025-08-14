@@ -151,7 +151,7 @@ export default function HomePage() {
           <Link to="/create">
             <Button size="lg" className="w-full sm:w-auto">
               <Plus className="h-5 w-5 mr-2" />
-              Create Your First Tot
+              Create Your First ToT
             </Button>
           </Link>
           <Link to="/browse">
@@ -167,7 +167,7 @@ export default function HomePage() {
       <section className="bg-muted/50 rounded-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">See It In Action</h2>
-          <p className="text-muted-foreground">Here's how typical tots look</p>
+          <p className="text-muted-foreground">Here's how typical ToTs look</p>
         </div>
         
         <div
@@ -276,7 +276,7 @@ export default function HomePage() {
           <div className="text-center">
             <Link to="/create">
               <Button size="lg">
-                Create Your Own Tot Like This
+                Create Your Own ToT Like This
               </Button>
             </Link>
           </div>
