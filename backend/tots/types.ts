@@ -9,8 +9,6 @@ export interface Tot {
   optionCText?: string;
   optionCImageUrl?: string;
   creatorIp?: string;
-  creatorUserId?: string;
-  isAnonymous?: boolean;
   isPublic: boolean;
   isTrending: boolean;
   createdAt: Date;
@@ -41,7 +39,6 @@ export interface CreateTotRequest {
   optionCText?: string;
   optionCImageUrl?: string;
   isPublic?: boolean;
-  isAnonymous?: boolean;
   expiresAt?: Date;
 }
 

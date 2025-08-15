@@ -6,7 +6,7 @@ export const API_BASE_URL = '';
 
 // Application metadata
 export const APP_NAME = 'ValidToT';
-export const APP_DESCRIPTION = 'Pick a side. Share the trend.';
+export const APP_DESCRIPTION = 'Visual This or That Voting Platform';
 export const APP_VERSION = '1.0.0';
 
 // UI Configuration

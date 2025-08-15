@@ -3,12 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
 import { Plus, TrendingUp, Users, Zap, Camera, Share2, BarChart3, Clock, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
 const exampleTots = [
@@ -144,14 +138,14 @@ export default function HomePage() {
           <span className="text-primary block">No Follows. No Sign-Ups.</span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Want instant feedback on your pics? You’re in the right place — 
-					perfect for outfit choices, side-by-side comparisons, and quick decisions.
+          Create visual tots in seconds. Get instant feedback from the crowd. 
+          Perfect for choosing outfits, comparing options, or settling debates.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/create">
             <Button size="lg" className="w-full sm:w-auto">
               <Plus className="h-5 w-5 mr-2" />
-              Create Your First ToT
+              Create Your First Tot
             </Button>
           </Link>
           <Link to="/browse">
@@ -167,7 +161,7 @@ export default function HomePage() {
       <section className="bg-muted/50 rounded-lg p-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold mb-4">See It In Action</h2>
-          <p className="text-muted-foreground">Here's how typical ToTs look</p>
+          <p className="text-muted-foreground">Here's how typical tots look</p>
         </div>
         
         <div
@@ -276,7 +270,7 @@ export default function HomePage() {
           <div className="text-center">
             <Link to="/create">
               <Button size="lg">
-                Create Your Own ToT Like This
+                Create Your Own Tot Like This
               </Button>
             </Link>
           </div>
@@ -349,78 +343,62 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQs Section */}
-      <section className="space-y-12">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Everything you need to know about ValidToT
-          </p>
-        </div>
-
-        <Accordion type="single" collapsible className="max-w-3xl mx-auto">
-          <AccordionItem value="faq-1">
-            <AccordionTrigger>What is ValidToT and what’s a ToT?</AccordionTrigger>
-            <AccordionContent>
-              ValidToT is a space to get quick, anonymous feedback on everyday choices — from outfits to opinions — using “ToTs” (This or That polls). You upload two options, and the crowd picks. No pressure, no profiles, just clean, instant votes.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-2">
-            <AccordionTrigger>Why use ValidToT instead of asking friends or posting on social media?</AccordionTrigger>
-            <AccordionContent>
-              Sometimes you want unbiased input — not your friends’ opinions or social media pressure. ValidToT gives you honest crowd feedback without the noise of likes, followers, or judgment.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-3">
-            <AccordionTrigger>Do I need to sign up or create an account?</AccordionTrigger>
-            <AccordionContent>
-              Nope. You can ask and vote on ToTs without creating an account. No names, no emails, no profiles. Just pure interaction — fast and anonymous.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-4">
-            <AccordionTrigger>Who sees my ToTs?</AccordionTrigger>
-            <AccordionContent>
-              Your ToTs are public to the ValidToT community — a mix of people who love giving feedback. But your identity is always private.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-5">
-            <AccordionTrigger>What kind of questions can I ask on ValidToT?</AccordionTrigger>
-            <AccordionContent>
-              Anything that helps you decide between two options. Here are some examples from real-life use cases:
-              <ul>
-                <li>Fashion: “Black sneakers or white loafers for tonight?”</li>
-                <li>Design: “Logo A or Logo B for my startup?”</li>
-                <li>Food: “Sushi or tacos for dinner?”</li>
-                <li>Shopping: “iPhone 15 or Galaxy S24?”</li>
-                <li>Relationships: “Reply to the text or leave it on read?”</li>
-              </ul>
-              Whether it’s serious or just for laughs — if it’s a “this or that,” it belongs here.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-6">
-            <AccordionTrigger>Is ValidToT free to use?</AccordionTrigger>
-            <AccordionContent>
-              Yes, it’s 100% free to vote, post, and explore ToTs.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-7">
-            <AccordionTrigger>Will there be more features in the future?</AccordionTrigger>
-            <AccordionContent>
-              Absolutely. We’re experimenting with reactions, themed categories, saved ToTs, and more. But we’ll always keep it simple, honest, and anonymous at the core.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </section>
-
-
       {/* Features Section */}
-      <section className="grid md:grid-cols-3 gap-8"></section>
+      <section className="grid md:grid-cols-3 gap-8">
+        <Card>
+          <CardHeader>
+            <Zap className="h-10 w-10 text-primary mb-2" />
+            <CardTitle>Quick & Easy</CardTitle>
+            <CardDescription>
+              Create visual tots in seconds with our intuitive interface
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              Upload images, add descriptions, and share your tot instantly. 
+              No registration required.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <Users className="h-10 w-10 text-primary mb-2" />
+            <CardTitle>Real-time Results</CardTitle>
+            <CardDescription>
+              Watch votes come in live with beautiful visualizations
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              See percentage breakdowns, vote counts, and trending status 
+              updated in real-time.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <TrendingUp className="h-10 w-10 text-primary mb-2" />
+            <CardTitle>Discover Trends</CardTitle>
+            <CardDescription>
+              Explore what's popular and join the conversation
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              Browse trending tots, discover new perspectives, and see 
+              what the community is talking about.
+            </p>
+          </CardContent>
+        </Card>
+      </section>
 
       {/* CTA Section */}
       <section className="text-center bg-muted rounded-lg p-8">
         <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
         <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-          Drop your pictures, get instant vibes from the people. 
+          Join thousands of users creating engaging visual tots. 
           It's free, fast, and fun!
         </p>
         <Link to="/create">

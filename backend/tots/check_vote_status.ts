@@ -15,27 +15,16 @@ interface VoteStatusResponse {
 
 // Checks if the current user has already voted on a tot.
 export const checkVoteStatus = api<CheckVoteStatusParams, VoteStatusResponse>(
-  { expose: true, method: "GET", path: "/tots/:id/vote-status", auth: true },
-  async ({ id, xForwardedFor, xRealIp, auth }) => {
+  { expose: true, method: "GET", path: "/tots/:id/vote-status" },
+  async ({ id, xForwardedFor, xRealIp }) => {
     // Extract IP address from headers
     const voterIp = xRealIp || xForwardedFor?.split(',')[0]?.trim() || 'unknown';
 
-    let existingVote;
-    if (auth?.uid) {
-      // If user is authenticated, check by user ID
-      existingVote = await totsDB.queryRow<{ option_selected: string }>`
-        SELECT option_selected 
-        FROM votes 
-        WHERE tot_id = ${id} AND user_id = ${auth.uid}
-      `;
-    } else {
-      // If user is not authenticated, check by IP (backward compatibility)
-      existingVote = await totsDB.queryRow<{ option_selected: string }>`
-        SELECT option_selected 
-        FROM votes 
-        WHERE tot_id = ${id} AND voter_ip = ${voterIp}
-      `;
-    }
+    const existingVote = await totsDB.queryRow<{ option_selected: string }>`
+      SELECT option_selected 
+      FROM votes 
+      WHERE tot_id = ${id} AND voter_ip = ${voterIp}
+    `;
 
     if (existingVote) {
       return {

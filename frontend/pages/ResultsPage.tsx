@@ -37,19 +37,17 @@ export default function ResultsPage() {
     
     if (navigator.share) {
       try {
-        const shareText = `Join the fun – pick a side! "${results?.tot.title}" – ${url}`;
         await navigator.share({
           title: results?.tot.title || 'Check out this tot',
-          text: shareText,
+          text: 'Vote on this interesting tot!',
           url: url,
         });
       } catch (error) {
-        // Share failed or was cancelled
+        // User cancelled sharing
       }
     } else {
       try {
-        const shareText = `Join the fun – pick a side! "${results?.tot.title}" – ${url}`;
-        await navigator.clipboard.writeText(shareText);
+        await navigator.clipboard.writeText(url);
         toast.success('Tot link copied to clipboard!');
       } catch (error) {
         toast.error('Failed to copy link');
@@ -136,13 +134,6 @@ export default function ResultsPage() {
         {tot.description && (
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {tot.description}
-          </p>
-        )}
-
-        {/* Creator Information */}
-        {tot.creatorUserId && (
-          <p className="text-sm text-muted-foreground">
-            {tot.isAnonymous ? 'Created by Anonymous User' : `Created by User ${tot.creatorUserId}`}
           </p>
         )}
 

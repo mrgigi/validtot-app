@@ -16,7 +16,6 @@ import { useSessionTracking } from '../hooks/useSessionTracking';
 export default function CreatePage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [isAnonymous, setIsAnonymous] = useState(true);
   const { recordCreation } = useSessionTracking();
   const [formData, setFormData] = useState<CreateTotRequest>({
     title: '',
@@ -66,10 +65,7 @@ export default function CreatePage() {
     setIsLoading(true);
 
     try {
-      const tot = await backend.tots.create({
-        ...formData,
-        isAnonymous: isAnonymous
-      });
+      const tot = await backend.tots.create(formData);
       recordCreation(tot.id);
       toast.success('Tot created successfully!');
       navigate(`/tot/${tot.id}`);
@@ -95,7 +91,7 @@ export default function CreatePage() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Create a New Tot</h1>
         <p className="text-muted-foreground">
-          Got Pictures? Let the crowd decide in minutes.
+          Create an engaging visual tot to get instant feedback from the crowd
         </p>
       </div>
 
@@ -161,17 +157,17 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option A *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionAText">Text * (max 24 characters)</Label>
+                  <Label htmlFor="optionAText">Text * (max 100 characters)</Label>
                   <Input
                     id="optionAText"
                     placeholder="First option"
                     value={formData.optionAText}
                     onChange={(e) => setFormData({ ...formData, optionAText: e.target.value })}
                     required
-                    maxLength={24}
+                    maxLength={100}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {formData.optionAText.length}/24
+                    {formData.optionAText.length}/100
                   </div>
                 </div>
                 <ImageUpload
@@ -187,17 +183,17 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option B *</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionBText">Text * (max 24 characters)</Label>
+                  <Label htmlFor="optionBText">Text * (max 100 characters)</Label>
                   <Input
                     id="optionBText"
                     placeholder="Second option"
                     value={formData.optionBText}
                     onChange={(e) => setFormData({ ...formData, optionBText: e.target.value })}
                     required
-                    maxLength={24}
+                    maxLength={100}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {formData.optionBText.length}/24
+                    {formData.optionBText.length}/100
                   </div>
                 </div>
                 <ImageUpload
@@ -213,16 +209,16 @@ export default function CreatePage() {
               <div className="space-y-4">
                 <h3 className="font-semibold text-lg">Option C (Optional)</h3>
                 <div className="space-y-2">
-                  <Label htmlFor="optionCText">Text (max 24 characters)</Label>
+                  <Label htmlFor="optionCText">Text (max 100 characters)</Label>
                   <Input
                     id="optionCText"
                     placeholder="Third option"
                     value={formData.optionCText}
                     onChange={(e) => setFormData({ ...formData, optionCText: e.target.value })}
-                    maxLength={24}
+                    maxLength={100}
                   />
                   <div className="text-xs text-muted-foreground text-right">
-                    {(formData.optionCText || '').length}/24
+                    {(formData.optionCText || '').length}/100
                   </div>
                 </div>
                 <ImageUpload
@@ -242,15 +238,6 @@ export default function CreatePage() {
                 onCheckedChange={(checked) => setFormData({ ...formData, isPublic: checked })}
               />
               <Label htmlFor="isPublic">Make this tot public</Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="isAnonymous"
-                checked={isAnonymous}
-                onCheckedChange={setIsAnonymous}
-              />
-              <Label htmlFor="isAnonymous">Post anonymously</Label>
             </div>
 
             <Button type="submit" className="w-full" disabled={isLoading} size="lg">

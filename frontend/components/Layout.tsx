@@ -3,9 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ThemeToggle } from './ThemeToggle';
-import { Vote, Plus, TrendingUp, History, Search, Menu, X, User } from 'lucide-react';
+import { Vote, Plus, TrendingUp, History, Search, Menu, X } from 'lucide-react';
 import { useSessionTracking } from '../hooks/useSessionTracking';
-import Auth from './Auth';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -15,7 +14,6 @@ export default function Layout({ children }: LayoutProps) {
   const { getVoteHistory } = useSessionTracking();
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();
   const voteCount = getVoteHistory().length;
 
@@ -26,11 +24,6 @@ export default function Layout({ children }: LayoutProps) {
     navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     setSearchQuery('');
     setIsMobileMenuOpen(false);
-  };
-
-  const handleAuthChange = (isAuthenticated: boolean) => {
-    setShowAuthModal(false);
-    // Handle auth state change if needed
   };
 
   return (
@@ -57,16 +50,32 @@ export default function Layout({ children }: LayoutProps) {
               </Button>
             </form>
 
-            {/* User Authentication */}
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link to="/browse" className="text-muted-foreground hover:text-foreground transition-colors">
+                Browse Tots
+              </Link>
+              <Link to="/search" className="text-muted-foreground hover:text-foreground transition-colors">
+                <Search className="h-4 w-4" />
+              </Link>
+              <Link to="/history" className="text-muted-foreground hover:text-foreground transition-colors flex items-center space-x-1">
+                <History className="h-4 w-4" />
+                <span>History</span>
+                {voteCount > 0 && (
+                  <span className="bg-primary text-primary-foreground text-xs rounded-full px-2 py-0.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+                    {voteCount}
+                  </span>
+                )}
+              </Link>
+              <Link to="/create">
+                <Button variant="outline" size="sm">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create
+                </Button>
+              </Link>
+            </nav>
+
             <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setShowAuthModal(true)}
-              >
-                <User className="h-4 w-4" />
-              </Button>
-              
               <ThemeToggle />
               
               {/* Mobile Menu Button */}
@@ -109,6 +118,14 @@ export default function Layout({ children }: LayoutProps) {
                     Browse Tots
                   </Link>
                   <Link 
+                    to="/search" 
+                    className="text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center space-x-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <Search className="h-4 w-4" />
+                    <span>Search</span>
+                  </Link>
+                  <Link 
                     to="/history" 
                     className="text-muted-foreground hover:text-foreground transition-colors py-2 flex items-center space-x-2"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -138,33 +155,9 @@ export default function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      {/* Authentication Modal */}
-      {showAuthModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background rounded-lg shadow-xl w-full max-w-md">
-            <Auth onAuthChange={handleAuthChange} />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="absolute top-2 right-2"
-              onClick={() => setShowAuthModal(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
-
       <footer className="border-t mt-16">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p className="text-sm">
-            <a
-              href="https://forms.gle/VDfGJE559gofZ3Zk9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline hover:text-foreground transition-colors mr-4"
-            >Contact or Suggest Features</a>
-            &copy; 2025 ValidToT. This or That - Compare for fun.</p>
+          <p>&copy; 2024 ValidToT. Visual This or That Voting Platform.</p>
         </div>
       </footer>
     </div>

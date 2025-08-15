@@ -11,7 +11,7 @@ export const get = api<GetTotParams, Tot>(
   { expose: true, method: "GET", path: "/tots/:id" },
   async ({ id }) => {
     const tot = await totsDB.queryRow<Tot>`
-      SELECT
+      SELECT 
         id,
         title,
         description,
@@ -22,8 +22,6 @@ export const get = api<GetTotParams, Tot>(
         option_c_text as "optionCText",
         option_c_image_url as "optionCImageUrl",
         creator_ip as "creatorIp",
-        creator_user_id as "creatorUserId",
-        is_anonymous as "isAnonymous",
         is_public as "isPublic",
         is_trending as "isTrending",
         created_at as "createdAt",
@@ -33,7 +31,7 @@ export const get = api<GetTotParams, Tot>(
         option_a_votes as "optionAVotes",
         option_b_votes as "optionBVotes",
         option_c_votes as "optionCVotes"
-      FROM tots
+      FROM tots 
       WHERE id = ${id}
     `;
 

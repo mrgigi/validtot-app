@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Users, Clock, TrendingUp, BarChart3, CheckCircle, Info, Share2 } from 'lucide-react';
+import { Users, Clock, TrendingUp, BarChart3, CheckCircle, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import backend from '~backend/client';
 import type { Tot } from '~backend/tots/types';
@@ -89,33 +89,6 @@ export default function TotPage() {
     return `${minutes}m remaining`;
   };
 
-  const handleShare = async () => {
-    if (!tot) return;
-
-    const shareUrl = `${window.location.origin}/tot/${tot.id}`;
-    const shareText = `No cap, your vote matters. "${tot.title}" → `;
-    const shareMessage = `Join the fun – pick a side! "${tot.title}" – `;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          text: shareText,
-          url: shareUrl,
-        });
-        console.log('Tot shared successfully');
-      } catch (error) {
-        console.error('Error sharing tot:', error);
-      }
-    } else {
-      navigator.clipboard.writeText(`${shareMessage}${shareUrl}`).then(() => {
-        toast.success('Tot link copied to clipboard!');
-      }).catch(err => {
-        console.error('Failed to copy tot link:', err);
-        toast.error('Failed to copy tot link.');
-      });
-    }
-  };
-
   const getOptionLabel = (option: 'A' | 'B' | 'C') => {
     switch (option) {
       case 'A': return tot?.optionAText || 'Option A';
@@ -175,20 +148,7 @@ export default function TotPage() {
         {tot.description && (
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             {tot.description}
-
           </p>
-        )}
-
-        {/* Creator Information */}
-        {tot.creatorUserId && (
-          <p className="text-sm text-muted-foreground">
-            {tot.isAnonymous ? 'Created by Anonymous User' : `Created by User ${tot.creatorUserId}`}
-          </p>
-        )}
-
-        {/* Share Button */}
-        {tot.id && (
-          <Button variant="outline" size="sm" onClick={handleShare}><Share2 className="h-4 w-4 mr-1" /> Share Tot</Button>
         )}
 
         <div className="flex items-center justify-center space-x-6 text-sm text-muted-foreground">
